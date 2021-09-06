@@ -20,6 +20,10 @@ export class Player extends Component {
     curHeading: Vec3 = v3(1, 0, 0);
     targetHeading: Vec3 = v3(1, 0, 0);
 
+    get radian() {
+        return Math.atan2(this.curHeading.y, this.curHeading.x);
+    }
+
     onLoad() {
         this.installEvents();
     }
