@@ -54,8 +54,4 @@ export class Player extends Component {
         playerPos.add3f(this.curHeading.x * this.speed * dt, this.curHeading.y * this.speed * dt, 0);
         this.node.setPosition(playerPos);
     }
-
-    lateUpdate() {
-
-    }
 }
