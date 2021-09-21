@@ -28,9 +28,9 @@ export class Shake {
 
     /**
      * 
-     * @param amplitude 振幅
-     * @param frequency 频率
-     * @param duration 周期（单位：秒）
+     * @param amplitude 振幅（单位：像素）
+     * @param frequence 频率（次/秒）
+     * @param duration 即震屏持续时长（单位：秒）
      */
     private init(amplitude: number, frequency: number, duration: number) {
         this.amplitude = amplitude;

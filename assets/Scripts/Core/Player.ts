@@ -2,6 +2,7 @@
 import { _decorator, Component, Node, Vec3, toRadian, toDegree, v3, CCFloat, RigidBody2D, Vec2, CCLoader } from 'cc';
 import { UI_EVENT } from '../Constants';
 import { Global } from '../Global';
+import { ecs } from '../Libs/ECS';
 
 let outV3 = v3(0, 0, 0);
 let playerPos = v3();
@@ -25,6 +26,7 @@ export class Player extends Component {
     }
 
     onLoad() {
+        window['ecs'] = ecs;
         this.installEvents();
     }
 

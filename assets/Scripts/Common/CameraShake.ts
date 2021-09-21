@@ -4,6 +4,13 @@ import { ecs } from '../Libs/ECS';
 import { Shake } from './Shake';
 const { ccclass, property } = _decorator;
 
+
+/**
+ * 震动这个功能可以抽离出来
+ * 
+ * 凡是有Node节点和Shaking状态的结点都能马上进行震动
+ */
+
 @ecs.register('Camera')
 class CameraComponent extends ecs.IComponent {
     originPos: Vec3 = v3();
@@ -12,6 +19,12 @@ class CameraComponent extends ecs.IComponent {
     xShakes: Shake[] = [];
     yShakes: Shake[] = [];
 
+    /**
+     * 
+     * @param amplitude 振幅（单位：像素）
+     * @param frequence 频率（次/秒）
+     * @param duration 即震屏持续时长（单位：秒）
+     */
     shake(amplitude: number, frequence: number, duration: number) {
         this.xShakes.push(Shake.new(amplitude, frequence, duration));
         this.yShakes.push(Shake.new(amplitude, frequence, duration));
@@ -39,7 +52,7 @@ export class CameraShake extends Component {
         systemEvent.on(SystemEvent.EventType.KEY_DOWN, (event: EventKeyboard) => {
             switch(event.keyCode) {
                 case KeyCode.KEY_G: {
-                    this.cameraComp.shake(6, 60, 0.4);
+                    this.cameraComp.shake(16, 120, 0.4);
                     break;
                 }
             }
