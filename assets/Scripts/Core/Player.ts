@@ -18,8 +18,8 @@ export class Player extends Component {
     @property(CCFloat)
     acceleration: number = 100;
 
-    curHeading: Vec3 = v3(1, 0, 0);
-    targetHeading: Vec3 = v3(1, 0, 0);
+    curHeading: Vec3 = v3(0, 1, 0);
+    targetHeading: Vec3 = v3(0, 1, 0);
 
     get radian() {
         return Math.atan2(this.curHeading.y, this.curHeading.x);
@@ -44,7 +44,7 @@ export class Player extends Component {
             outV3.multiplyScalar(0.025);
             this.curHeading.add(outV3);
             this.curHeading.normalize();
-            this.node.angle = toDegree(Math.atan2(this.curHeading.y, this.curHeading.x));
+            this.node.angle = toDegree(Math.atan2(this.curHeading.y, this.curHeading.x)) - 90;
             console.log(this.node.angle);
         }
 
