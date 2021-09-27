@@ -35,7 +35,7 @@ export module ecs {
         /**
          * 拥有该组件的实体
          */
-        ent!: ecs.Entity;
+        ent!: Entity;
         /**
          * 组件被回收时会调用这个接口。可以在这里重置数据，或者解除引用。
          * 
@@ -44,6 +44,12 @@ export module ecs {
         abstract reset(): void;
 
         static matcher: IMatcher | null = null;
+
+        /**
+         * 是否可回收组件对象，默认情况下都是可回收的。
+         * 如果该组件对象是由ecs系统外部创建的，则不可回收，需要用户自己手动进行回收。
+         */
+        private canRecycle: boolean = true;
     }
 
     /**
@@ -451,12 +457,36 @@ export module ecs {
             // @ts-ignore
             this[ctor.compName] = component;
             this.compTid2Ctor.set(componentTypeId, ctor);
+            component.ent = this;
             // 广播实体添加组件的消息
             broadcastComponentAddOrRemove(this, componentTypeId);
 
-            component.ent = this;
-
             return component;
+        }
+
+        /**
+         * 添加已经实例化的组件
+         * @param obj 组件对象
+         * @returns 实体对象
+         */
+        addObj(obj: IComponent) {
+            let compTid = (obj.constructor as ComponentConstructor).tid;
+            if(compTid === -1 || !compTid) {
+                throw Error('组件未注册！');
+            }
+            if(this.compTid2Ctor.has(compTid)) {
+                throw Error('已经存在该组件！');
+            }
+
+            let ctor = componentConstructors[compTid] as ComponentConstructor;
+            this.mask.set(compTid);
+            this[ctor.compName] = obj;
+            this.compTid2Ctor.set(compTid, ctor);
+            obj.ent = this;
+            // @ts-ignore
+            obj.canRecycle = false;
+            broadcastComponentAddOrRemove(this, compTid);
+            return this;
         }
 
         addComponents(...ctors: ComponentType[]) {
@@ -482,13 +512,13 @@ export module ecs {
         remove<T extends IComponent>(ctor: ComponentConstructor<T>) {
             let componentTypeId = ctor.tid;
             if (this.mask.has(componentTypeId)) {
+                let comp = this[ctor.compName] as IComponent;
+                comp.reset();
+                comp.ent = null;
                 // @ts-ignore
-                (this[ctor.compName] as IComponent).reset();
-                // @ts-ignore
-                (this[ctor.compName] as IComponent).ent = null;
-                // @ts-ignore
-                componentPools.get(componentTypeId).push(this[ctor.compName]);
-                // @ts-ignore
+                if(comp.canRecycle) {
+                    componentPools.get(componentTypeId).push(comp);
+                }
                 this[ctor.compName] = null;
                 this.mask.delete(componentTypeId);
                 broadcastComponentAddOrRemove(this, componentTypeId);

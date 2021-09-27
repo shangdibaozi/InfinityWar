@@ -75,8 +75,9 @@ export const MotionStreakAssembler: IAssembler = {
         // prev.distance = Vec2.subtract(_vec2, cur.point, prev.point).length();
         Vec2.subtract(_vec2, cur.point, prev.point)
         _vec2.normalize();
-        prev.setDir(_vec2.x, _vec2.y);
-        cur.setDir(_vec2.x, _vec2.y);
+        normal(_normal, _vec2);
+        prev.setDir(_normal.x, _normal.y);
+        cur.setDir(_normal.x, _normal.y);
 
         renderData.dataLength = points.length * 2;
 
@@ -112,7 +113,7 @@ export const MotionStreakAssembler: IAssembler = {
             // }
             // findLast = true;
 
-            normal(_normal, dir);
+            // normal(_normal, dir);
 
             const da = progress * ca;
             // 颜色abgr
@@ -120,8 +121,8 @@ export const MotionStreakAssembler: IAssembler = {
 
             let offset = verticesCount;
 
-            data[offset].x = point.x + _normal.x * stroke;
-            data[offset].y = point.y + _normal.y * stroke;
+            data[offset].x = point.x + dir.x * stroke;
+            data[offset].y = point.y + dir.y * stroke;
             if(comp.trailDir == TrailDir.Up) {
                 data[offset].u = 1;
                 data[offset].v = 1 - progress;
@@ -142,8 +143,8 @@ export const MotionStreakAssembler: IAssembler = {
 
             offset += 1;
  
-            data[offset].x = point.x - _normal.x * stroke;
-            data[offset].y = point.y - _normal.y * stroke;
+            data[offset].x = point.x - dir.x * stroke;
+            data[offset].y = point.y - dir.y * stroke;
             if(comp.trailDir == TrailDir.Up) {
                 data[offset].u = 0;
                 data[offset].v = 1 - progress;
