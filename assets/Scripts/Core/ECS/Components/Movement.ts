@@ -1,4 +1,4 @@
-import { _decorator, toDegree, v3, Vec2, Vec3 } from "cc";
+import { _decorator, toDegree, v3, Node, Vec3 } from "cc";
 import { ecs } from "../../../Libs/ECS";
 const { ccclass, property } = _decorator;
 
@@ -8,7 +8,7 @@ export class MovementTag {
     static Stop: number = 0;
 }
 
-@ecs.register('CCNodeComponent')
+@ecs.register('CCNode')
 export class CCNodeComponent extends ecs.IComponent {
     val: Node = null;
 
@@ -20,7 +20,7 @@ export class CCNodeComponent extends ecs.IComponent {
 let outV3 = v3();
 
 @ccclass('MovementComponent')
-@ecs.register('MovementComponent')
+@ecs.register('Movement')
 export class MovementComponent extends ecs.IComponent {
     pos: Vec3 = v3();
 
@@ -54,9 +54,14 @@ export class MovementComponent extends ecs.IComponent {
         }
 
         if(this.speed < this.maxSpeed) {
-            this.speed = Math.min(this.speed + this.acceleration * dt, this.maxSpeed)
+            this.speed = Math.min(this.speed + this.acceleration * dt, this.maxSpeed);
         }
 
         this.pos.add3f(this.heading.x * this.speed * dt, this.heading.y * this.speed * dt, 0);
+    }
+
+    calcAngle() {
+        this.angle = toDegree(Math.atan2(this.heading.y, this.heading.x)) - 90;
+        return this.angle;
     }
 }

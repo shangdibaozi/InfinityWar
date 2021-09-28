@@ -1,4 +1,4 @@
-import { EventTarget } from "cc";
+import { EventTarget, Node } from "cc";
 
 class UIEvent extends EventTarget {
     constructor() {
@@ -8,5 +8,7 @@ class UIEvent extends EventTarget {
 
 export class Global {
     static uiEvent: UIEvent = new UIEvent();
+
+    static gameLayer: Node;
 }
 

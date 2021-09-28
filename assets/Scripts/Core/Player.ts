@@ -3,7 +3,7 @@ import { _decorator, Component, Vec3, v3 } from 'cc';
 import { UI_EVENT } from '../Constants';
 import { Global } from '../Global';
 import { ecs } from '../Libs/ECS';
-import { MovementComponent } from './ECS/Components/Movement';
+import { CCNodeComponent, MovementComponent } from './ECS/Components/Movement';
 import { ShootComopnent } from './ECS/Components/ShootComponent';
 
 const { ccclass, property } = _decorator;
@@ -27,7 +27,8 @@ export class Player extends Component {
         window['ecs'] = ecs;
 
         this.ent.addObj(this.shootDetail).addObj(this.movement);
-        
+        this.ent.add(CCNodeComponent).val = this.node;
+
         this.installEvents();
     }
 
@@ -45,8 +46,9 @@ export class Player extends Component {
     }
 
     update(dt: number) {
-        this.movement.update(dt);
-        this.node.angle = this.movement.angle;
-        this.node.setPosition(this.movement.pos);
+        // this.movement.update(dt);
+        // this.node.angle = this.movement.angle;
+        // this.node.setPosition(this.movement.pos);
+        this.shootDetail.shoot(dt, this.movement.heading);
     }
 }
