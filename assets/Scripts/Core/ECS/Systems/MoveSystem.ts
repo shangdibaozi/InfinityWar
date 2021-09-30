@@ -1,9 +1,10 @@
 import { ecs } from "../../../Libs/ECS";
+import { ECSTag } from "../Components/ECSTag";
 import { CCNodeComponent, MovementComponent } from "../Components/Movement";
 
 export class MoveSystem extends ecs.ComblockSystem {
     filter(): ecs.IMatcher {
-        return ecs.allOf(CCNodeComponent, MovementComponent);
+        return ecs.allOf(CCNodeComponent, MovementComponent, ECSTag.CanMove);
     }
 
     update(entities: ecs.Entity[]): void {

@@ -5,5 +5,27 @@
       "fitWidth": true,
       "fitHeight": false
     }
+  },
+  "physics": {
+    "collisionGroups": [
+      {
+        "index": 1,
+        "name": "Wall"
+      },
+      {
+        "index": 2,
+        "name": "Bullet"
+      },
+      {
+        "index": 3,
+        "name": "Player"
+      }
+    ],
+    "collisionMatrix": {
+      "0": 1,
+      "1": 12,
+      "2": 2,
+      "3": 2
+    }
   }
 }

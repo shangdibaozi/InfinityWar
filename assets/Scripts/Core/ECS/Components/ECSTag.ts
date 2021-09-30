@@ -5,4 +5,7 @@ export class ECSTag {
     static TypePlayer: number = 0;
 
     static TypeBullet: number = 0;
+
+    static CanMove: number = 0;
+    static CanShoot: number = 0;
 }

@@ -1,0 +1,75 @@
+{
+  "ver": "1.0.21",
+  "importer": "image",
+  "imported": true,
+  "uuid": "8ce8850b-6c0a-49e5-b2d0-6734c4b6a79f",
+  "files": [
+    ".png",
+    ".json"
+  ],
+  "subMetas": {
+    "6c48a": {
+      "ver": "1.0.21",
+      "importer": "texture",
+      "uuid": "8ce8850b-6c0a-49e5-b2d0-6734c4b6a79f@6c48a",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {},
+      "userData": {
+        "wrapModeS": "clamp-to-edge",
+        "wrapModeT": "clamp-to-edge",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "premultiplyAlpha": false,
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "8ce8850b-6c0a-49e5-b2d0-6734c4b6a79f"
+      },
+      "displayName": "Default-Particle",
+      "id": "6c48a",
+      "name": "texture"
+    },
+    "f9941": {
+      "importer": "sprite-frame",
+      "uuid": "8ce8850b-6c0a-49e5-b2d0-6734c4b6a79f@f9941",
+      "displayName": "Default-Particle",
+      "id": "f9941",
+      "name": "spriteFrame",
+      "userData": {
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 0.5,
+        "offsetY": -0.5,
+        "trimX": 2,
+        "trimY": 2,
+        "width": 61,
+        "height": 61,
+        "rawWidth": 64,
+        "rawHeight": 64,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "8ce8850b-6c0a-49e5-b2d0-6734c4b6a79f@6c48a",
+        "atlasUuid": ""
+      },
+      "ver": "1.0.9",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "type": "sprite-frame",
+    "redirect": "8ce8850b-6c0a-49e5-b2d0-6734c4b6a79f@f9941",
+    "hasAlpha": true
+  }
+}

@@ -26,9 +26,7 @@ export enum AI_STATE {
 
 export enum PhysicsGroup {
     DEFAULT = 1 << 0,
-    Player_Attack = 1 << 1,
-    Enemy_Body = 1 << 2,
-    Player_Body = 1 << 3,
-    Enemy_Attack = 1 << 4,
-    Ground_Item = 1 << 5
+    Wall = 1 << 1,
+    Bullet = 1 << 2,
+    Player = 1 << 3
 }
