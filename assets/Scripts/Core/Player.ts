@@ -28,6 +28,7 @@ export class Player extends Component {
     onLoad() {
         window['ecs'] = ecs;
 
+        this.ent.addTag(ECSTag.TypePlayer);
         this.ent.addObj(this.shootDetail).addObj(this.movement);
         this.ent.add(CCNodeComponent).val = this.node;
         this.ent.addTag(ECSTag.CanMove);
@@ -50,12 +51,5 @@ export class Player extends Component {
 
     onPlayerMove(heading: Vec3) {
         this.movement.targetHeading.set(heading);
-    }
-
-    update(dt: number) {
-        // this.movement.update(dt);
-        // this.node.angle = this.movement.angle;
-        // this.node.setPosition(this.movement.pos);
-        // this.shootDetail.shoot(dt, this.movement.heading);
     }
 }
