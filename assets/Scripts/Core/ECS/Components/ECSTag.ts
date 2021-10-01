@@ -6,6 +6,8 @@ export class ECSTag {
 
     static TypeBullet: number = 0;
 
+    static TypeCamera: number = 0;
+
     static CanMove: number = 0;
     static CanShoot: number = 0;
 }

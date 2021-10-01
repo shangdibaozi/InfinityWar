@@ -11,7 +11,7 @@ const { ccclass, property } = _decorator;
 
 let outv3 = v3();
 
-let FlashTime = 3 / 60;
+let FlashTime = 2 / 60;
 @ccclass('ShootComopnent')
 @ecs.register('Shoot')
 export class ShootComopnent extends ecs.IComponent {

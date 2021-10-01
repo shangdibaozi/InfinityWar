@@ -1,7 +1,10 @@
 
 import { _decorator, Component, Node, PhysicsSystem2D, Contact2DType, Collider2D, IPhysics2DContact } from 'cc';
 import { PhysicsGroup } from '../Constants';
+import { ecs } from '../Libs/ECS';
 import { ECSTag } from './ECS/Components/ECSTag';
+import { GameCameraComponent } from './ECS/Components/GameCameraComponent';
+import { ShakeComponent } from './ECS/Components/ShakeComponent';
 import { EntLink } from './ECS/EntLink';
 const { ccclass, property } = _decorator;
 
@@ -41,6 +44,11 @@ export class CollisionCheck extends Component {
                 let ent = playerBody.parent.getComponent(EntLink).ent;
                 ent.removeTag(ECSTag.CanMove);
                 ent.removeTag(ECSTag.CanShoot);
+                
+                ent.add(ShakeComponent).shake(5, 80, 0.2);
+
+                // 震屏
+                // ecs.getSingleton(GameCameraComponent).shake();
                 break;
             }
         }
