@@ -58,7 +58,7 @@ export class ShootComopnent extends ecs.IComponent {
         this.flash2 = null;
     }
 
-    init() {
+    hideFlash() {
         if(this.flash1) {
             this.flash1.active = false;
         }

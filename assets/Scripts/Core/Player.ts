@@ -51,7 +51,7 @@ export class Player extends Component {
         ent.addTag(ECSTag.CanShoot);
         this.addComponent(EntLink).ent = ent;
 
-        this.shootDetail.init();
+        this.shootDetail.hideFlash();
 
         this.originalPos.set(this.node.position);
         this.defaultHeading.set(this.movement.heading);
@@ -60,7 +60,7 @@ export class Player extends Component {
 
     dead() {
         this.trail.active = false;
-
+        this.shootDetail.hideFlash();
         this.bc2d.group = PhysicsGroup.DEFAULT; // 取消碰撞检测
         
         let ent = ecs.getSingleton(PlayerComponent).ent;
