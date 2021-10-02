@@ -1,8 +1,17 @@
+import { Vec3 } from "cc";
+import { UI_EVENT } from "../../../Constants";
+import { Global } from "../../../Global";
 import { ecs } from "../../../Libs/ECS";
 import { ECSTag } from "../Components/ECSTag";
 import { CCNodeComponent, MovementComponent } from "../Components/Movement";
+import { PlayerComponent } from "../Components/PlayerComponent";
 
 export class MoveSystem extends ecs.ComblockSystem {
+
+    init() {
+        Global.uiEvent.on(UI_EVENT.PLAYER_MOVE, this.onPlayerMove, this);
+    }
+
     filter(): ecs.IMatcher {
         return ecs.allOf(CCNodeComponent, MovementComponent, ECSTag.CanMove);
     }
@@ -18,4 +27,7 @@ export class MoveSystem extends ecs.ComblockSystem {
         }
     }
 
+    onPlayerMove(heading: Vec3) {
+        ecs.getSingleton(PlayerComponent).ent.get(MovementComponent).targetHeading.set(heading);
+    }
 }

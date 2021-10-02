@@ -33,9 +33,7 @@ class ParticleEnt extends ecs.Entity {
 export class TrailParticle extends Component {
     @property(Graphics)
     graphics: Graphics;
-
-    @property(Player)
-    player: Player;
+    
 
     particleGroup: ecs.Group<ParticleEnt>;
 
@@ -43,22 +41,22 @@ export class TrailParticle extends Component {
         this.particleGroup = ecs.createGroup(ecs.allOf(ParticleComp, LifeTimerComponent));
     }
 
-    createParticle(offsetX: number, offsetY: number) {
-        let ent = ecs.createEntityWithComps<ParticleEnt>(ParticleComp, LifeTimerComponent);
-        ent.LifeTimer.init(Util.randomRange(0.2, 0.35));
-        let pos = this.player.node.getPosition();
-        // curHeading是向量i的朝向，j和i垂直，并且j始终在i的顺时针方向。
-        let x = offsetX * this.player.curHeading.x + offsetY * -this.player.curHeading.y;
-        let y = offsetX * this.player.curHeading.y + offsetY * this.player.curHeading.x;
-        ent.Particle.x = pos.x + x;
-        ent.Particle.y = pos.y + y;
-        ent.Particle.r = Util.randomRange(2, 4);
-        ent.Particle.color.set(DefaultColor);
-    }
+    // createParticle(offsetX: number, offsetY: number) {
+    //     let ent = ecs.createEntityWithComps<ParticleEnt>(ParticleComp, LifeTimerComponent);
+    //     ent.LifeTimer.init(Util.randomRange(0.2, 0.35));
+    //     let pos = this.player.node.getPosition();
+    //     // curHeading是向量i的朝向，j和i垂直，并且j始终在i的顺时针方向。
+    //     let x = offsetX * this.player.curHeading.x + offsetY * -this.player.curHeading.y;
+    //     let y = offsetX * this.player.curHeading.y + offsetY * this.player.curHeading.x;
+    //     ent.Particle.x = pos.x + x;
+    //     ent.Particle.y = pos.y + y;
+    //     ent.Particle.r = Util.randomRange(2, 4);
+    //     ent.Particle.color.set(DefaultColor);
+    // }
 
     update(dt: number) {
-        this.createParticle(-25, 5);
-        this.createParticle(-25, -5);
+        // this.createParticle(-25, 5);
+        // this.createParticle(-25, -5);
         if(this.particleGroup.count > 0) {
             this.graphics.clear();
             for(let ent of this.particleGroup.matchEntities) {

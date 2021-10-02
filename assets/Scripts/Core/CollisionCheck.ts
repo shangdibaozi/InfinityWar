@@ -4,6 +4,7 @@ import { PhysicsGroup } from '../Constants';
 import { ecs } from '../Libs/ECS';
 import { ECSTag } from './ECS/Components/ECSTag';
 import { GameCameraComponent } from './ECS/Components/GameCameraComponent';
+import { PlayerComponent } from './ECS/Components/PlayerComponent';
 import { ShakeComponent } from './ECS/Components/ShakeComponent';
 import { EntLink } from './ECS/EntLink';
 const { ccclass, property } = _decorator;
@@ -41,14 +42,7 @@ export class CollisionCheck extends Component {
                 if(selfCollider.group & PhysicsGroup.Wall) {
                     playerBody = otherCollider.node;
                 }
-                let ent = playerBody.parent.getComponent(EntLink).ent;
-                ent.removeTag(ECSTag.CanMove);
-                ent.removeTag(ECSTag.CanShoot);
-                
-                ent.add(ShakeComponent).shake(5, 80, 0.2);
-
-                // 震屏
-                // ecs.getSingleton(GameCameraComponent).shake();
+                ecs.getSingleton(PlayerComponent).val.dead();
                 break;
             }
         }

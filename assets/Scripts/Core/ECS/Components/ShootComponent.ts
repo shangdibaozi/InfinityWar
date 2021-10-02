@@ -102,7 +102,7 @@ export class ShootComopnent extends ecs.IComponent {
     createBullet(point: Node) {
         let node = ObjPool.getNode(this.bulletPrefab.data.name, this.bulletPrefab);
         node.active = true;
-        node.parent = Global.gameLayer;
+        node.parent = Global.bulletLayer;
         Global.gameLayer.getComponent(UITransform).convertToNodeSpaceAR(point.getWorldPosition(outv3), outv3);
         node.setPosition(outv3);
 

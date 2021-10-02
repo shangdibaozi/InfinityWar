@@ -10,5 +10,6 @@ export class Global {
     static uiEvent: UIEvent = new UIEvent();
 
     static gameLayer: Node;
+    static bulletLayer: Node;
 }
 
