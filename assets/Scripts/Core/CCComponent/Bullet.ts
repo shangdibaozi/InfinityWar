@@ -1,9 +1,11 @@
 
 import { _decorator, Component, Node, Prefab, Vec3 } from 'cc';
 import { ObjPool } from '../../Common/ObjPool';
+import { Global } from '../../Global';
 import { ecs } from '../../Libs/ECS';
 import { CCComp } from '../ECS/Components/CCComp';
 import { ECSTag } from '../ECS/Components/ECSTag';
+import { LifeTimerComponent } from '../ECS/Components/LifeTimerComponent';
 import { CCNodeComponent, MovementComponent } from '../ECS/Components/Movement';
 import { BulletEntity } from '../ECS/Entities/BulletEntity';
 import { EntLink } from '../ECS/EntLink';
@@ -49,9 +51,17 @@ export class Bullet extends CCComp {
         ObjPool.putNode(this.node);
         // this.ent.remove(ECSTag.CanMove);
         this.ent.remove(MovementComponent, false);
+
+        let effect = ObjPool.getNode(this.collisionEffect.data.name, this.collisionEffect);
+        effect.parent = Global.bulletLayer;
+        effect.setPosition(this.node.getPosition());
+
+        let ent = ecs.createEntity();
+        ent.add(CCNodeComponent).val = effect;
+        ent.add(LifeTimerComponent).init(0.1);
     }
 
     reset() {
-        
+
     }
 }

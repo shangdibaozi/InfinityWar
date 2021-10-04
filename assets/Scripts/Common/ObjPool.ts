@@ -50,6 +50,7 @@ export class ObjPool {
         else {
             node = lst!.pop()!;
         }
+        node.active = true;
         return node;
     }
 
