@@ -3,13 +3,12 @@ import { _decorator, Component, Node, Graphics, Color, color, toRadian } from 'c
 import { ecs } from '../Libs/ECS';
 import { Util } from '../Util';
 import { LifeTimerComponent } from './ECS/Components/LifeTimerComponent';
-import { Player } from './Player';
 const { ccclass, property } = _decorator;
 
 const DefaultColor = color(255, 198, 93, 255);
 
 @ecs.register('Particle')
-class ParticleComp extends ecs.IComponent {
+class ParticleComp extends ecs.Comp {
     x: number = 0;
     y: number = 0;
     r: number = 0;

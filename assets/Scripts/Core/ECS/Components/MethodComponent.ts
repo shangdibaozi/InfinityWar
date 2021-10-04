@@ -2,7 +2,7 @@ import { ecs } from "../../../Libs/ECS";
 import { LifeTimerComponent } from "./LifeTimerComponent";
 
 @ecs.register('MethodComponent')
-export class MethodComponent extends ecs.IComponent {
+export class MethodComponent extends ecs.Comp {
 
     static matcher: ecs.IMatcher = ecs.allOf(LifeTimerComponent);
 

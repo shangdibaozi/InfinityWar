@@ -9,7 +9,7 @@ export class MovementTag {
 }
 
 @ecs.register('CCNode')
-export class CCNodeComponent extends ecs.IComponent {
+export class CCNodeComponent extends ecs.Comp {
     val: Node = null;
 
     reset() {
@@ -21,7 +21,7 @@ let outV3 = v3();
 
 @ccclass('MovementComponent')
 @ecs.register('Movement')
-export class MovementComponent extends ecs.IComponent {
+export class MovementComponent extends ecs.Comp {
     pos: Vec3 = v3();
 
     angle: number = 0;

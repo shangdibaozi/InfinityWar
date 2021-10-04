@@ -6,7 +6,7 @@ import { ShakeComponent } from "./ShakeComponent";
 const { ccclass, property } = _decorator;
 @ccclass('GameCameraComponent')
 @ecs.register('GameCamera')
-export class GameCameraComponent extends ecs.IComponent {
+export class GameCameraComponent extends ecs.Comp {
     @property({
         tooltip: '振幅'
     })

@@ -2,7 +2,7 @@ import { EPSILON } from "cc";
 import { ecs } from "../../../Libs/ECS";
 
 @ecs.register('LifeTimer')
-export class LifeTimerComponent extends ecs.IComponent {
+export class LifeTimerComponent extends ecs.Comp {
     maxLifeTime: number = EPSILON;
     lifeTime: number = 0;
 

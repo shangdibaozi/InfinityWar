@@ -2,6 +2,7 @@ import { Canvas, director, instantiate, Node, Prefab, Sprite, tween, UIComponent
 import { ObjPool } from '../../../Common/ObjPool';
 import { Global } from '../../../Global';
 import { ecs } from "../../../Libs/ECS";
+import { Bullet } from '../../CCComponent/Bullet';
 import { BulletEntity } from '../Entities/BulletEntity';
 import { EntLink } from '../EntLink';
 import { ECSTag } from './ECSTag';
@@ -14,7 +15,7 @@ let outv3 = v3();
 let FlashTime = 2 / 60;
 @ccclass('ShootComopnent')
 @ecs.register('Shoot')
-export class ShootComopnent extends ecs.IComponent {
+export class ShootComopnent extends ecs.Comp {
     private timer: number = 0;
 
     @property
@@ -104,26 +105,28 @@ export class ShootComopnent extends ecs.IComponent {
         node.active = true;
         node.parent = Global.bulletLayer;
         Global.gameLayer.getComponent(UITransform).convertToNodeSpaceAR(point.getWorldPosition(outv3), outv3);
-        node.setPosition(outv3);
 
-        let entLink = node.getComponent(EntLink);
-        if(!entLink) {
-            entLink = node.addComponent(EntLink);
-        }
+        node.getComponent(Bullet).init(outv3, this.heading, this.heading);
 
-        let ent = BulletEntity.create();
-        ent.addTag(ECSTag.CanMove);
-        entLink.ent = ent;
-        ent.CCNode.val = node;
-        let move = ent.Movement;
-        move.heading.set(this.heading);
-        move.targetHeading.set(this.heading);
-        move.speed = 500;
-        move.maxSpeed = 500;
-        move.acceleration = 500;
-        move.pos.set(outv3);
-        node.angle = move.calcAngle();
+        // node.setPosition(outv3);
 
-        // tween(flash).to(0.2, {opacity: 0})
+        // let entLink = node.getComponent(EntLink);
+        // if(!entLink) {
+        //     entLink = node.addComponent(EntLink);
+        // }
+
+        // let ent = BulletEntity.create();
+        // ent.addTag(ECSTag.CanMove);
+        // entLink.ent = ent;
+        // ent.CCNode.val = node;
+        // let move = ent.Movement;
+        // move.heading.set(this.heading);
+        // move.targetHeading.set(this.heading);
+        // move.speed = 500;
+        // move.maxSpeed = 500;
+        // move.acceleration = 500;
+        // move.pos.set(outv3);
+        // node.angle = move.calcAngle();
+        
     }
 }

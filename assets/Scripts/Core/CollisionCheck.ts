@@ -2,11 +2,8 @@
 import { _decorator, Component, Node, PhysicsSystem2D, Contact2DType, Collider2D, IPhysics2DContact } from 'cc';
 import { PhysicsGroup } from '../Constants';
 import { ecs } from '../Libs/ECS';
-import { ECSTag } from './ECS/Components/ECSTag';
-import { GameCameraComponent } from './ECS/Components/GameCameraComponent';
-import { PlayerComponent } from './ECS/Components/PlayerComponent';
-import { ShakeComponent } from './ECS/Components/ShakeComponent';
-import { EntLink } from './ECS/EntLink';
+import { Bullet } from './CCComponent/Bullet';
+import { Player } from './CCComponent/Player';
 const { ccclass, property } = _decorator;
 
 let Bullet_Contact_Wall = PhysicsGroup.Bullet | PhysicsGroup.Wall;
@@ -34,7 +31,7 @@ export class CollisionCheck extends Component {
                 if(selfCollider.group & PhysicsGroup.Wall) {
                     bullet = otherCollider.node;
                 }
-                bullet.getComponent(EntLink).recycle();
+                bullet.getComponent(Bullet).collision()
                 break;
             }
             case Player_Contact_Wall: {
@@ -42,7 +39,7 @@ export class CollisionCheck extends Component {
                 if(selfCollider.group & PhysicsGroup.Wall) {
                     playerBody = otherCollider.node;
                 }
-                ecs.getSingleton(PlayerComponent).val.dead();
+                ecs.getSingleton(Player).dead();
                 break;
             }
         }

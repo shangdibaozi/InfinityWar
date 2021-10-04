@@ -1,18 +1,20 @@
 
 import { _decorator, Component, Vec3, v3, BoxCollider2D, Node } from 'cc';
-import { PhysicsGroup, UI_EVENT } from '../Constants';
-import { Global } from '../Global';
-import { ecs } from '../Libs/ECS';
-import { ECSTag } from './ECS/Components/ECSTag';
-import { CCNodeComponent, MovementComponent } from './ECS/Components/Movement';
-import { PlayerComponent } from './ECS/Components/PlayerComponent';
-import { ShakeComponent } from './ECS/Components/ShakeComponent';
-import { ShootComopnent } from './ECS/Components/ShootComponent';
-import { EntLink } from './ECS/EntLink';
+import { PhysicsGroup, UI_EVENT } from '../../Constants';
+import { Global } from '../../Global';
+import { ecs } from '../../Libs/ECS';
+import { CCComp } from '../ECS/Components/CCComp';
+import { ECSTag } from '../ECS/Components/ECSTag';
+import { MovementComponent, CCNodeComponent } from '../ECS/Components/Movement';
+import { ShakeComponent } from '../ECS/Components/ShakeComponent';
+import { ShootComopnent } from '../ECS/Components/ShootComponent';
+import { EntLink } from '../ECS/EntLink';
+
 
 const { ccclass, property } = _decorator;
 @ccclass('Player')
-export class Player extends Component {
+@ecs.register('Player', false)
+export class Player extends CCComp {
 
     @property({
         type: BoxCollider2D
@@ -39,10 +41,12 @@ export class Player extends Component {
     defaltTargetHeading: Vec3 = v3();
 
     onLoad() {
-        let playerComp = ecs.getSingleton(PlayerComponent);
-        playerComp.val = this;
-
-        let ent = playerComp.ent;
+        super.onLoad();
+        ecs.addSingleton(this);
+        
+        Global.uiEvent.on(UI_EVENT.PLAYER_MOVE, this.onPlayerMove, this);
+        
+        let ent = this.ent;
 
         ent.addTag(ECSTag.TypePlayer);
         ent.addObj(this.shootDetail).addObj(this.movement);
@@ -58,14 +62,18 @@ export class Player extends Component {
         this.defaltTargetHeading.set(this.movement.targetHeading);
     }
 
+    onPlayerMove(heading: Vec3) {
+        this.ent.get(MovementComponent).targetHeading.set(heading);
+    }
+
     dead() {
         this.trail.active = false;
         this.shootDetail.hideFlash();
         this.bc2d.group = PhysicsGroup.DEFAULT; // 取消碰撞检测
         
-        let ent = ecs.getSingleton(PlayerComponent).ent;
-        ent.removeTag(ECSTag.CanMove);
-        ent.removeTag(ECSTag.CanShoot);
+        let ent = this.ent;
+        ent.remove(ECSTag.CanMove);
+        ent.remove(ECSTag.CanShoot);
         
         ent.add(ShakeComponent).shake(5, 80, 0.2);
     }
@@ -76,7 +84,7 @@ export class Player extends Component {
         this.node.angle = 0;
         this.bc2d.group = PhysicsGroup.Player;
 
-        let ent = ecs.getSingleton(PlayerComponent).ent;
+        let ent = this.ent;
         
         this.movement.angle = 0;
         this.movement.pos.set(this.originalPos);
@@ -84,5 +92,9 @@ export class Player extends Component {
         this.movement.targetHeading.set(this.defaltTargetHeading);
         ent.addTag(ECSTag.CanMove);
         ent.addTag(ECSTag.CanShoot);
+    }
+
+    reset() {
+
     }
 }

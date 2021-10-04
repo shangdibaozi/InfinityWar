@@ -6,7 +6,7 @@ import { CCNodeComponent } from "./Movement";
 let pos = v3();
 
 @ecs.register('ShakeComponent')
-export class ShakeComponent extends ecs.IComponent {
+export class ShakeComponent extends ecs.Comp {
     originPos: Vec3 = v3();
     pos: Vec3 = v3();
 
