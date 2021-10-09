@@ -5,7 +5,7 @@ import { Global } from '../../Global';
 import { ecs } from '../../Libs/ECS';
 import { CCComp } from '../ECS/Components/CCComp';
 import { ECSTag } from '../ECS/Components/ECSTag';
-import { MovementComponent, CCNodeComponent } from '../ECS/Components/Movement';
+import { MovementComponent, CCNodeComponent, BoostComp } from '../ECS/Components/Movement';
 import { ShakeComponent } from '../ECS/Components/ShakeComponent';
 import { ShootComopnent } from '../ECS/Components/ShootComponent';
 import { EntLink } from '../ECS/EntLink';
@@ -35,6 +35,11 @@ export class Player extends CCComp {
         type: MovementComponent
     })
     movement: MovementComponent;
+
+    @property({
+        type: BoostComp
+    })
+    boost: BoostComp;
     
     originalPos: Vec3 = v3();
     defaultHeading: Vec3 = v3();
@@ -49,7 +54,7 @@ export class Player extends CCComp {
         let ent = this.ent;
 
         ent.addTag(ECSTag.TypePlayer);
-        ent.addObj(this.shootDetail).addObj(this.movement);
+        ent.addObj(this.shootDetail).addObj(this.movement).addObj(this.boost);
         ent.add(CCNodeComponent).val = this.node;
         ent.addTag(ECSTag.CanMove);
         ent.addTag(ECSTag.CanShoot);
@@ -64,12 +69,17 @@ export class Player extends CCComp {
         // test
         systemEvent.on(SystemEvent.EventType.KEY_DOWN, (event: EventKeyboard) => {
             if(event.keyCode == KeyCode.KEY_W) {
-                this.movement.isBoost = true;
+                this.boost.boosting = true;
+                this.boost.isAdd = true;
+            }
+            else if(event.keyCode == KeyCode.KEY_S) {
+                this.boost.boosting = true;
+                this.boost.isAdd = false;
             }
         }, this);
         systemEvent.on(SystemEvent.EventType.KEY_UP, event => {
-            if(event.keyCode == KeyCode.KEY_W) {
-                this.movement.isBoost = false;
+            if(event.keyCode == KeyCode.KEY_W || event.keyCode == KeyCode.KEY_S) {
+                this.boost.boosting = false;
             }
         });
     }

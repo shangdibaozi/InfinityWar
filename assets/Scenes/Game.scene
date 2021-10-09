@@ -18,7 +18,7 @@
         "__id__": 2
       },
       {
-        "__id__": 119
+        "__id__": 120
       },
       {
         "__id__": 5
@@ -29,7 +29,7 @@
     "_prefab": null,
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 121
+      "__id__": 122
     },
     "_id": "570bbfae-65a4-406f-a53b-804a6206d64e"
   },
@@ -114,10 +114,10 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 117
+        "__id__": 118
       },
       {
-        "__id__": 118
+        "__id__": 119
       }
     ],
     "_prefab": null,
@@ -3039,6 +3039,9 @@
     "movement": {
       "__id__": 116
     },
+    "boost": {
+      "__id__": 117
+    },
     "_id": "edtWimjSxKCJQ98DopB9LW"
   },
   {
@@ -3064,7 +3067,7 @@
   {
     "__type__": "MovementComponent",
     "acceleration": 300,
-    "_baseMaxSpeed": 200,
+    "_maxSpeed": 250,
     "heading": {
       "__type__": "cc.Vec3",
       "x": 0,
@@ -3076,8 +3079,16 @@
       "x": 0,
       "y": 1,
       "z": 0
-    },
-    "boostMulti": 1.5
+    }
+  },
+  {
+    "__type__": "BoostComp",
+    "multiAdd": 1.5,
+    "multiSub": 0.1,
+    "cooldown": 2,
+    "maxBoost": 100,
+    "addBoostSpeed": 10,
+    "subBoostSpeed": 50
   },
   {
     "__type__": "cc.UITransform",
@@ -3140,7 +3151,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 120
+        "__id__": 121
       }
     ],
     "_prefab": null,
@@ -3177,7 +3188,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 119
+      "__id__": 120
     },
     "_enabled": true,
     "__prefab": null,
@@ -3186,16 +3197,16 @@
   {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 122
-    },
-    "shadows": {
       "__id__": 123
     },
-    "_skybox": {
+    "shadows": {
       "__id__": 124
     },
-    "fog": {
+    "_skybox": {
       "__id__": 125
+    },
+    "fog": {
+      "__id__": 126
     }
   },
   {

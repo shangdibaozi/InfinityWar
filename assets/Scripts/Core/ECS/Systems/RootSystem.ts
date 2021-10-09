@@ -1,4 +1,5 @@
 import { ecs } from "../../../Libs/ECS";
+import { BoostSystem } from "./BoostSystem";
 import { LifeTimerSystem } from "./LifeTimerSystem";
 import { MoveSystem } from "./MoveSystem";
 import { ShakeSystem } from "./ShakeSystem";
@@ -9,7 +10,9 @@ export class RootSystem extends ecs.RootSystem {
     constructor() {
         super();
 
+        this.add(new BoostSystem());
         this.add(new MoveSystem());
+        
         this.add(new ShootSystem());
         this.add(new ShakeSystem());
 

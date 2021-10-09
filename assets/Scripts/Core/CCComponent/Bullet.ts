@@ -39,7 +39,7 @@ export class Bullet extends CCComp {
         move.heading.set(heading);
         move.targetHeading.set(targetHeading);
         move.speed = 500;
-        move.baseMaxSpeed = 500;
+        move.maxSpeed = 500;
         move.acceleration = 500;
         move.pos.set(pos);
         this.node.angle = move.calcAngle();
