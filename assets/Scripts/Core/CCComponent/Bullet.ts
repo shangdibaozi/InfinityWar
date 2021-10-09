@@ -7,8 +7,6 @@ import { CCComp } from '../ECS/Components/CCComp';
 import { ECSTag } from '../ECS/Components/ECSTag';
 import { LifeTimerComponent } from '../ECS/Components/LifeTimerComponent';
 import { CCNodeComponent, MovementComponent } from '../ECS/Components/Movement';
-import { BulletEntity } from '../ECS/Entities/BulletEntity';
-import { EntLink } from '../ECS/EntLink';
 const { ccclass, property } = _decorator;
 
 @ccclass('Bullet')

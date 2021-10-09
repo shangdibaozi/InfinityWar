@@ -930,8 +930,8 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 415.7049999999999,
-      "y": -278.806,
+      "x": -555.581,
+      "y": 300.762,
       "z": 0
     },
     "_lrot": {
@@ -1051,7 +1051,7 @@
       "b": 0,
       "a": 255
     },
-    "_string": "button",
+    "_string": "复活",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 20,
@@ -2430,12 +2430,12 @@
       "r": 255,
       "g": 255,
       "b": 255,
-      "a": 255
+      "a": 196
     },
     "_preview": true,
-    "_fadeTime": 0.25,
+    "_fadeTime": 0.4,
     "_minSeg": 0,
-    "_stroke": 9,
+    "_stroke": 12,
     "_texture": {
       "__uuid__": "dafaf0de-b0c5-4cb4-8de3-cb2db4dde998@6c48a",
       "__expectedType__": "cc.Texture2D"

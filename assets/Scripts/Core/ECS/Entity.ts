@@ -1,7 +1,8 @@
-import { ecs } from "../../../Libs/ECS";
-import { ECSTag } from "../Components/ECSTag";
-import { LifeTimerComponent } from "../Components/LifeTimerComponent";
-import { CCNodeComponent, MovementComponent } from "../Components/Movement";
+import { ecs } from "../../Libs/ECS";
+import { ECSTag } from "./Components/ECSTag";
+import { LifeTimerComponent } from "./Components/LifeTimerComponent";
+import { CCNodeComponent, MovementComponent } from "./Components/Movement";
+
 
 export class BulletEntity extends ecs.Entity {
     static create() {

@@ -26,18 +26,19 @@ export module ecs {
           * 拥有该组件的实体
           */
          ent!: Entity;
+
+         /**
+          * 是否可回收组件对象，默认情况下都是可回收的。
+          * 如果该组件对象是由ecs系统外部创建的，则不可回收，需要用户自己手动进行回收。
+          */
+          canRecycle: boolean = true;
+
          /**
           * 组件被回收时会调用这个接口。可以在这里重置数据，或者解除引用。
           * 
           * **不要偷懒，除非你能确定并保证组件在复用时，里面的数据是先赋值然后再使用。**
           */
          abstract reset(): void;
- 
-         /**
-          * 是否可回收组件对象，默认情况下都是可回收的。
-          * 如果该组件对象是由ecs系统外部创建的，则不可回收，需要用户自己手动进行回收。
-          */
-         canRecycle: boolean = true;
     }
 
     //#region 类型声明
@@ -218,7 +219,7 @@ export module ecs {
             group = new Group(matcher);
             groups.set(matcher.mid, group);
             let careComponentTypeIds = matcher.indices;
-            for (let i = 0, len = careComponentTypeIds.length; i < len; i++) {
+            for (let i = 0; i < careComponentTypeIds.length; i++) {
                 compAddOrRemove.get(careComponentTypeIds[i])!.push(group.onComponentAddOrRemove.bind(group));
             }
         }

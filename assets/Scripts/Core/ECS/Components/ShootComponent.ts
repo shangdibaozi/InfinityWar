@@ -3,10 +3,6 @@ import { ObjPool } from '../../../Common/ObjPool';
 import { Global } from '../../../Global';
 import { ecs } from "../../../Libs/ECS";
 import { Bullet } from '../../CCComponent/Bullet';
-import { BulletEntity } from '../Entities/BulletEntity';
-import { EntLink } from '../EntLink';
-import { ECSTag } from './ECSTag';
-import { CCNodeComponent, MovementComponent } from './Movement';
 const { ccclass, property } = _decorator;
 
 

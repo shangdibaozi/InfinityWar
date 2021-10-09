@@ -8,7 +8,7 @@ export abstract class CCComp extends Component implements ecs.IComp {
     static tid: number = -1;
     static compName: string;
 
-    canRecycle: any;
+    canRecycle: boolean;
     ent: ecs.Entity;
 
     onLoad() {
