@@ -32,13 +32,32 @@ export class MovementComponent extends ecs.Comp {
     acceleration: number = 0;
 
     @property
-    maxSpeed: number = 0;
+    private _baseMaxSpeed: number = 0;
+    @property
+    set baseMaxSpeed(val: number) {
+        this._baseMaxSpeed = val;
+    }
+    get baseMaxSpeed() {
+        return this._baseMaxSpeed;
+    }
+
+    private maxSpeed: number = 0;
 
     @property
     heading: Vec3 = v3();
     
     @property
     targetHeading: Vec3 = v3();
+
+    /**
+     * 是否在推进
+     */
+    isBoost: boolean = false;
+
+    @property({
+        tooltip: '推进倍数（最大速度值乘以这个倍数作为新的最大速度值）'
+    })
+    boostMulti: number = 1;
 
     reset() {
 
@@ -53,9 +72,14 @@ export class MovementComponent extends ecs.Comp {
             this.angle = toDegree(Math.atan2(this.heading.y, this.heading.x)) - 90;
         }
 
-        if(this.speed < this.maxSpeed) {
-            this.speed = Math.min(this.speed + this.acceleration * dt, this.maxSpeed);
+        if(this.isBoost) {
+            this.maxSpeed = this.boostMulti * this._baseMaxSpeed;
         }
+        else {
+            this.maxSpeed = this._baseMaxSpeed;
+        }
+        
+        this.speed = Math.min(this.speed + this.acceleration * dt, this.maxSpeed);
 
         this.pos.add3f(this.heading.x * this.speed * dt, this.heading.y * this.speed * dt, 0);
     }

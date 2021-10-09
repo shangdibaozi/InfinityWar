@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Vec3, v3, BoxCollider2D, Node } from 'cc';
+import { _decorator, Component, Vec3, v3, BoxCollider2D, Node, systemEvent, SystemEvent, EventKeyboard, KeyCode } from 'cc';
 import { PhysicsGroup, UI_EVENT } from '../../Constants';
 import { Global } from '../../Global';
 import { ecs } from '../../Libs/ECS';
@@ -60,6 +60,18 @@ export class Player extends CCComp {
         this.originalPos.set(this.node.position);
         this.defaultHeading.set(this.movement.heading);
         this.defaltTargetHeading.set(this.movement.targetHeading);
+
+        // test
+        systemEvent.on(SystemEvent.EventType.KEY_DOWN, (event: EventKeyboard) => {
+            if(event.keyCode == KeyCode.KEY_W) {
+                this.movement.isBoost = true;
+            }
+        }, this);
+        systemEvent.on(SystemEvent.EventType.KEY_UP, event => {
+            if(event.keyCode == KeyCode.KEY_W) {
+                this.movement.isBoost = false;
+            }
+        });
     }
 
     onPlayerMove(heading: Vec3) {

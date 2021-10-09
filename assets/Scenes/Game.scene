@@ -2430,7 +2430,7 @@
       "r": 255,
       "g": 255,
       "b": 255,
-      "a": 196
+      "a": 255
     },
     "_preview": true,
     "_fadeTime": 0.4,
@@ -3064,7 +3064,7 @@
   {
     "__type__": "MovementComponent",
     "acceleration": 300,
-    "maxSpeed": 200,
+    "_baseMaxSpeed": 200,
     "heading": {
       "__type__": "cc.Vec3",
       "x": 0,
@@ -3076,7 +3076,8 @@
       "x": 0,
       "y": 1,
       "z": 0
-    }
+    },
+    "boostMulti": 1.5
   },
   {
     "__type__": "cc.UITransform",
