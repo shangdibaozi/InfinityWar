@@ -53,11 +53,11 @@ export class Player extends CCComp {
         
         let ent = this.ent;
 
-        ent.addTag(ECSTag.TypePlayer);
+        ent.add(ECSTag.TypePlayer);
         ent.addObj(this.shootDetail).addObj(this.movement).addObj(this.boost);
         ent.add(CCNodeComponent).val = this.node;
-        ent.addTag(ECSTag.CanMove);
-        ent.addTag(ECSTag.CanShoot);
+        ent.add(ECSTag.CanMove);
+        ent.add(ECSTag.CanShoot);
         this.addComponent(EntLink).ent = ent;
 
         this.shootDetail.hideFlash();
@@ -112,8 +112,8 @@ export class Player extends CCComp {
         this.movement.pos.set(this.originalPos);
         this.movement.heading.set(this.defaultHeading);
         this.movement.targetHeading.set(this.defaltTargetHeading);
-        ent.addTag(ECSTag.CanMove);
-        ent.addTag(ECSTag.CanShoot);
+        ent.add(ECSTag.CanMove);
+        ent.add(ECSTag.CanShoot);
     }
 
     reset() {

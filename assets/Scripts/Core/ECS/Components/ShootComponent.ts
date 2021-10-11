@@ -112,7 +112,7 @@ export class ShootComopnent extends ecs.Comp {
         // }
 
         // let ent = BulletEntity.create();
-        // ent.addTag(ECSTag.CanMove);
+        // ent.add(ECSTag.CanMove);
         // entLink.ent = ent;
         // ent.CCNode.val = node;
         // let move = ent.Movement;

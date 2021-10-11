@@ -430,41 +430,60 @@ export module ecs {
          * @param componentTypeId 组件id
          * @param isReAdd true-表示用户指定这个实体可能已经存在了该组件，那么再次add组件的时候会先移除该组件然后再添加一遍。false-表示不重复添加组件。
          */
-        add<T extends IComp>(ctor: CompCtor<T>, isReAdd: boolean = false): T  {
-            let compTid = ctor.tid;
-            if(ctor.tid === -1) {
-                throw Error('组件未注册！');
-            }
-            if (this.compTid2Ctor.has(compTid)) {// 判断是否有该组件，如果有则先移除
-                if(isReAdd) {
-                    this.remove(ctor);
+        add(ctor: number, isReAdd?: boolean): Entity;
+        add<T extends IComp>(ctor: CompCtor<T>, isReAdd?: boolean): T;
+        add<T extends IComp>(ctor: CompType<T>, isReAdd?: boolean): T;
+        add<T extends IComp>(ctor: CompType<T>, isReAdd: boolean = false): T | Entity  {
+            if(typeof ctor === 'number') {
+                if(tags.has(ctor)) {
+                    this.mask.set(ctor);
+                    this.compTid2Ctor.set(ctor, ctor);
+                    let tagName = tags.get(ctor)!;
+                    // @ts-ignore
+                    this[tagName] = ctor;
+                    broadcastCompAddOrRemove(this, ctor);
                 }
                 else {
-                    console.log(`已经存在组件：${ctor.compName}`);
-                    // @ts-ignore
-                    return this[ctor.compName] as T;
+                    throw Error('不存在的tag！');
                 }
-            }
-            this.mask.set(compTid);
-
-            let comp: T;
-            if(this.compTid2Obj.has(compTid)) {
-                comp = this.compTid2Obj.get(compTid) as T;
-                this.compTid2Obj.delete(compTid);
+                return this;
             }
             else {
-                // 创建组件对象
-                comp = createComp(ctor) as T;
+                let compTid = ctor.tid;
+                if(ctor.tid === -1) {
+                    throw Error('组件未注册！');
+                }
+                if (this.compTid2Ctor.has(compTid)) {// 判断是否有该组件，如果有则先移除
+                    if(isReAdd) {
+                        this.remove(ctor);
+                    }
+                    else {
+                        console.log(`已经存在组件：${ctor.compName}`);
+                        // @ts-ignore
+                        return this[ctor.compName] as T;
+                    }
+                }
+                this.mask.set(compTid);
+    
+                let comp: T;
+                if(this.compTid2Obj.has(compTid)) {
+                    comp = this.compTid2Obj.get(compTid) as T;
+                    this.compTid2Obj.delete(compTid);
+                }
+                else {
+                    // 创建组件对象
+                    comp = createComp(ctor) as T;
+                }
+                // 将组件对象直接附加到实体对象身上，方便直接获取。
+                // @ts-ignore
+                this[ctor.compName] = comp;
+                this.compTid2Ctor.set(compTid, ctor);
+                comp.ent = this;
+                // 广播实体添加组件的消息
+                broadcastCompAddOrRemove(this, compTid);
+    
+                return comp;
             }
-            // 将组件对象直接附加到实体对象身上，方便直接获取。
-            // @ts-ignore
-            this[ctor.compName] = comp;
-            this.compTid2Ctor.set(compTid, ctor);
-            comp.ent = this;
-            // 广播实体添加组件的消息
-            broadcastCompAddOrRemove(this, compTid);
-
-            return comp;
         }
 
         /**
@@ -491,29 +510,9 @@ export module ecs {
             return this;
         }
 
-        addTag(tag: number) {
-            if(tags.has(tag)) {
-                this.mask.set(tag);
-                this.compTid2Ctor.set(tag, tag);
-                let tagName = tags.get(tag)!;
-                // @ts-ignore
-                this[tagName] = tag;
-                broadcastCompAddOrRemove(this, tag);
-            }
-            else {
-                throw Error('不存在的tag！');
-            }
-            return this;
-        }
-
-        addComponents(...ctors: CompType<IComp>[]) {
+        addComponents<T extends IComp>(...ctors: CompType<T>[]) {
             for(let ctor of ctors) {
-                if(typeof ctor === 'number') {
-                    this.addTag(ctor);
-                }
-                else {
-                    this.add(ctor);
-                }
+                this.add(ctor);
             }
             return this;
         }

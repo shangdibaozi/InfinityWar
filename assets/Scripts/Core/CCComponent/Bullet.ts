@@ -24,7 +24,7 @@ export class Bullet extends CCComp {
 
     initEnt() {
         let ent = this.ent;
-        ent.addTag(ECSTag.CanMove);
+        ent.add(ECSTag.CanMove);
         ent.add(CCNodeComponent).val = this.node;
         // ent.add(MovementComponent);
     }
@@ -33,7 +33,7 @@ export class Bullet extends CCComp {
         this.node.setPosition(pos);
 
         let ent = this.ent;
-        ent.addTag(ECSTag.CanMove);
+        ent.add(ECSTag.CanMove);
         ent.get(CCNodeComponent).val = this.node;
         let move = ent.add(MovementComponent);
         move.heading.set(heading);

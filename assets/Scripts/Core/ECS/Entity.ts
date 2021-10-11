@@ -9,7 +9,7 @@ export class BulletEntity extends ecs.Entity {
         let ent = ecs.createEntity<BulletEntity>();
         ent.add(CCNodeComponent);
         ent.add(MovementComponent);
-        ent.addTag(ECSTag.TypeBullet);
+        ent.add(ECSTag.TypeBullet);
         ent.add(LifeTimerComponent).lifeTime = 3;
         return ent;
     }
