@@ -13,7 +13,7 @@ export abstract class CCComp extends Component implements ecs.IComp {
 
     onLoad() {
         this.ent = ecs.createEntity();
-        this.ent.addObj(this);    
+        this.ent.add(this);    
     }
 
     abstract reset(): void;

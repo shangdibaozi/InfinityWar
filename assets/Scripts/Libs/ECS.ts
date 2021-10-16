@@ -430,25 +430,13 @@ export module ecs {
          * @param componentTypeId 组件id
          * @param isReAdd true-表示用户指定这个实体可能已经存在了该组件，那么再次add组件的时候会先移除该组件然后再添加一遍。false-表示不重复添加组件。
          */
+        add<T extends IComp>(obj: T): Entity;
         add(ctor: number, isReAdd?: boolean): Entity;
         add<T extends IComp>(ctor: CompCtor<T>, isReAdd?: boolean): T;
         add<T extends IComp>(ctor: CompType<T>, isReAdd?: boolean): T;
-        add<T extends IComp>(ctor: CompType<T>, isReAdd: boolean = false): T | Entity  {
-            if(typeof ctor === 'number') {
-                if(tags.has(ctor)) {
-                    this.mask.set(ctor);
-                    this.compTid2Ctor.set(ctor, ctor);
-                    let tagName = tags.get(ctor)!;
-                    // @ts-ignore
-                    this[tagName] = ctor;
-                    broadcastCompAddOrRemove(this, ctor);
-                }
-                else {
-                    throw Error('不存在的tag！');
-                }
-                return this;
-            }
-            else {
+        add<T extends IComp>(ctor: CompType<T> | T, isReAdd: boolean = false): T | Entity  {
+            console.log('typeof: ', typeof ctor);
+            if(typeof ctor === 'function') {
                 let compTid = ctor.tid;
                 if(ctor.tid === -1) {
                     throw Error('组件未注册！');
@@ -484,30 +472,40 @@ export module ecs {
     
                 return comp;
             }
-        }
-
-        /**
-         * 添加已经实例化的组件
-         * @param obj 组件对象
-         * @returns 实体对象
-         */
-        addObj<T extends IComp>(obj: T) {
-            let ctor = (obj.constructor as CompCtor<T>);
-            let compTid = ctor.tid;
-            if(compTid === -1 || !compTid) {
-                throw Error('组件未注册！');
+            else if(typeof ctor === 'number') {
+                if(tags.has(ctor)) {
+                    this.mask.set(ctor);
+                    this.compTid2Ctor.set(ctor, ctor);
+                    let tagName = tags.get(ctor)!;
+                    // @ts-ignore
+                    this[tagName] = ctor;
+                    broadcastCompAddOrRemove(this, ctor);
+                }
+                else {
+                    throw Error('不存在的tag！');
+                }
+                return this;
             }
-            if(this.compTid2Ctor.has(compTid)) {
-                throw Error('已经存在该组件！');
+            else {
+                let tmpCtor = (ctor.constructor as CompCtor<T>);
+                let compTid = tmpCtor.tid;
+                // console.assert(compTid !== -1 || !compTid, '组件未注册！');
+                // console.assert(this.compTid2Ctor.has(compTid), '已存在该组件！');
+                if(compTid === -1 || compTid == null) {
+                    throw Error('组件未注册！');
+                }
+                if(this.compTid2Ctor.has(compTid)) {
+                    throw Error('已经存在该组件！');
+                }
+                
+                this.mask.set(compTid);
+                this[tmpCtor.compName] = ctor;
+                this.compTid2Ctor.set(compTid, tmpCtor);
+                ctor.ent = this;
+                ctor.canRecycle = false;
+                broadcastCompAddOrRemove(this, compTid);
+                return this;
             }
-            
-            this.mask.set(compTid);
-            this[ctor.compName] = obj;
-            this.compTid2Ctor.set(compTid, ctor);
-            obj.ent = this;
-            obj.canRecycle = false;
-            broadcastCompAddOrRemove(this, compTid);
-            return this;
         }
 
         addComponents<T extends IComp>(...ctors: CompType<T>[]) {
@@ -517,9 +515,18 @@ export module ecs {
             return this;
         }
 
-        get<T extends IComp>(ctor: CompCtor<T>): T {
+        get(ctor: number): number;
+        get<T extends IComp>(ctor: CompCtor<T>): T;
+        get<T extends IComp>(ctor: CompCtor<T> | number): T {
+            let compName: string;
+            if(typeof(ctor) === 'number') {
+                compName = tags.get(ctor)!;
+            }
+            else {
+                compName = ctor.compName;
+            }
             // @ts-ignore
-            return this[ctor.compName];
+            return this[compName];
         }
 
         has(ctor: CompType<IComp>): boolean {
@@ -794,7 +801,6 @@ export module ecs {
                 this.rules.forEach((rule) => {
                     Array.prototype.push.apply(this._indices, rule.indices);
                 });
-                this.bindMatchMethod();
             }
             return this._indices;
         }
@@ -805,6 +811,7 @@ export module ecs {
          */
         public anyOf(...args: CompType<IComp>[]): Matcher {
             this.rules.push(new AnyOf(...args));
+            this.bindMatchMethod();
             return this;
         }
 
@@ -814,6 +821,7 @@ export module ecs {
          */
         public allOf(...args: CompType<IComp>[]): Matcher {
             this.rules.push(new AllOf(...args));
+            this.bindMatchMethod();
             return this;
         }
 
@@ -833,6 +841,7 @@ export module ecs {
                 }
             }
             this.rules.push(new ExcludeOf(...otherTids));
+            this.bindMatchMethod();
             return this;
         }
 
@@ -842,6 +851,7 @@ export module ecs {
          */
         public excludeOf(...args: CompType<IComp>[]) {
             this.rules.push(new ExcludeOf(...args));
+            this.bindMatchMethod();
             return this;
         }
 
