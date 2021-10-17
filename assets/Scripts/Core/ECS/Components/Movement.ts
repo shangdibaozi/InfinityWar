@@ -47,6 +47,14 @@ export class MovementComponent extends ecs.Comp {
     }
 
     update(dt: number) {
+        this.updateHeading();
+        
+        this.speed = Math.min(this.speed + this.acceleration * dt, this._maxSpeed);
+
+        this.pos.add3f(this.heading.x * this.speed * dt, this.heading.y * this.speed * dt, 0);
+    }
+
+    updateHeading() {
         if(!Vec3.equals(this.heading, this.targetHeading, 0.01)) {
             Vec3.subtract(outV3, this.targetHeading, this.heading);
             outV3.multiplyScalar(0.025);
@@ -54,10 +62,6 @@ export class MovementComponent extends ecs.Comp {
             this.heading.normalize();
             this.angle = toDegree(Math.atan2(this.heading.y, this.heading.x)) - 90;
         }
-        
-        this.speed = Math.min(this.speed + this.acceleration * dt, this._maxSpeed);
-
-        this.pos.add3f(this.heading.x * this.speed * dt, this.heading.y * this.speed * dt, 0);
     }
 
     calcAngle() {

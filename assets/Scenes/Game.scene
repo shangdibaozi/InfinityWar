@@ -18,7 +18,7 @@
         "__id__": 2
       },
       {
-        "__id__": 120
+        "__id__": 121
       },
       {
         "__id__": 5
@@ -26,10 +26,12 @@
     ],
     "_active": true,
     "_components": [],
-    "_prefab": null,
+    "_prefab": {
+      "__id__": 123
+    },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 122
+      "__id__": 124
     },
     "_id": "570bbfae-65a4-406f-a53b-804a6206d64e"
   },
@@ -45,6 +47,9 @@
     "_components": [
       {
         "__id__": 3
+      },
+      {
+        "__id__": 120
       }
     ],
     "_prefab": null,
@@ -273,7 +278,7 @@
     "_priority": 1073741824,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 436.98537682789646,
+    "_orthoHeight": 450.15063731170335,
     "_near": 1,
     "_far": 2000,
     "_color": {
@@ -3084,7 +3089,7 @@
   {
     "__type__": "BoostComp",
     "multiAdd": 1.5,
-    "multiSub": 0.1,
+    "multiSub": 0.5,
     "cooldown": 2,
     "maxBoost": 100,
     "addBoostSpeed": 10,
@@ -3141,6 +3146,21 @@
     "_id": "c2lQHOYFhCBJeSgpDhPVqp"
   },
   {
+    "__type__": "d2fa653DbhLR6xVkFqP7jbH",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "ammo": {
+      "__uuid__": "0ca0133e-91a4-407d-b06e-80e94a1a04b4",
+      "__expectedType__": "cc.Prefab"
+    },
+    "_id": "3fRfHCYVNNH7bDceicQ2GG"
+  },
+  {
     "__type__": "cc.Node",
     "_name": "CollisionCheck",
     "_objFlags": 0,
@@ -3151,7 +3171,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 121
+        "__id__": 122
       }
     ],
     "_prefab": null,
@@ -3188,25 +3208,30 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 120
+      "__id__": 121
     },
     "_enabled": true,
     "__prefab": null,
     "_id": "b5RjkYGvVNfb4v4aE53t8I"
   },
   {
+    "__type__": "cc.PrefabInfo",
+    "fileId": "",
+    "targetOverrides": []
+  },
+  {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 123
-    },
-    "shadows": {
-      "__id__": 124
-    },
-    "_skybox": {
       "__id__": 125
     },
-    "fog": {
+    "shadows": {
       "__id__": 126
+    },
+    "_skybox": {
+      "__id__": 127
+    },
+    "fog": {
+      "__id__": 128
     }
   },
   {

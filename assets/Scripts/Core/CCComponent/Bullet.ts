@@ -1,6 +1,7 @@
 
-import { _decorator, Component, Node, Prefab, Vec3 } from 'cc';
+import { _decorator, Component, Node, Prefab, Vec3, BoxCollider2D, Collider2D } from 'cc';
 import { ObjPool } from '../../Common/ObjPool';
+import { PhysicsGroup } from '../../Constants';
 import { Global } from '../../Global';
 import { ecs } from '../../Libs/ECS';
 import { CCComp } from '../ECS/Components/CCComp';
@@ -17,8 +18,14 @@ export class Bullet extends CCComp {
     })
     collisionEffect: Prefab;
 
+    @property({
+        type: Collider2D
+    })
+    c2d: Collider2D;
+
     onLoad() {
         super.onLoad();
+
         this.initEnt();
     }
 
@@ -43,9 +50,11 @@ export class Bullet extends CCComp {
         move.acceleration = 500;
         move.pos.set(pos);
         this.node.angle = move.calcAngle();
+
+        this.c2d.group = PhysicsGroup.Bullet;
     }
 
-    collision() {
+    onCollision() {
         ObjPool.putNode(this.node);
         // this.ent.remove(ECSTag.CanMove);
         this.ent.remove(MovementComponent, false);
@@ -57,6 +66,8 @@ export class Bullet extends CCComp {
         let ent = ecs.createEntity();
         ent.add(CCNodeComponent).val = effect;
         ent.add(LifeTimerComponent).init(0.1);
+
+        this.c2d.group = PhysicsGroup.DEFAULT;
     }
 
     reset() {

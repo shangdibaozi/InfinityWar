@@ -2,12 +2,14 @@
 import { _decorator, Component, Node, PhysicsSystem2D, Contact2DType, Collider2D, IPhysics2DContact } from 'cc';
 import { PhysicsGroup } from '../Constants';
 import { ecs } from '../Libs/ECS';
+import { Ammo } from './CCComponent/Ammo';
 import { Bullet } from './CCComponent/Bullet';
 import { Player } from './CCComponent/Player';
 const { ccclass, property } = _decorator;
 
 let Bullet_Contact_Wall = PhysicsGroup.Bullet | PhysicsGroup.Wall;
 let Player_Contact_Wall = PhysicsGroup.Player | PhysicsGroup.Wall;
+let Player_Contact_Collectable = PhysicsGroup.Player | PhysicsGroup.Collectable;
 
 
 @ccclass('CollisionCheck')
@@ -16,9 +18,9 @@ export class CollisionCheck extends Component {
         if(PhysicsSystem2D.instance) {
             let p2d = PhysicsSystem2D.instance;
             p2d.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
-            p2d.on(Contact2DType.END_CONTACT, this.onEndContact, this);
-            p2d.on(Contact2DType.PRE_SOLVE, this.onPreSolve, this);
-            p2d.on(Contact2DType.POST_SOLVE, this.onPostSolve, this);
+            // p2d.on(Contact2DType.END_CONTACT, this.onEndContact, this);
+            // p2d.on(Contact2DType.PRE_SOLVE, this.onPreSolve, this);
+            // p2d.on(Contact2DType.POST_SOLVE, this.onPostSolve, this);
         }
     }
 
@@ -31,7 +33,7 @@ export class CollisionCheck extends Component {
                 if(selfCollider.group & PhysicsGroup.Wall) {
                     bullet = otherCollider.node;
                 }
-                bullet.getComponent(Bullet).collision()
+                bullet.getComponent(Bullet).onCollision()
                 break;
             }
             case Player_Contact_Wall: {
@@ -41,6 +43,13 @@ export class CollisionCheck extends Component {
                 }
                 ecs.getSingleton(Player).dead();
                 break;
+            }
+            case Player_Contact_Collectable: {
+                let ammo = selfCollider.node;
+                if(selfCollider.group & PhysicsGroup.Player) {
+                    ammo = otherCollider.node;
+                }
+                ammo.getComponent(Ammo).onCollision();
             }
         }
     }

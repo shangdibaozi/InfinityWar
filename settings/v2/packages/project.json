@@ -21,13 +21,18 @@
       {
         "index": 3,
         "name": "Player"
+      },
+      {
+        "index": 4,
+        "name": "Collectable"
       }
     ],
     "collisionMatrix": {
       "0": 1,
       "1": 12,
       "2": 2,
-      "3": 2
+      "3": 18,
+      "4": 8
     }
   }
 }

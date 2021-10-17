@@ -8,6 +8,8 @@ export class ECSTag {
 
     static TypeCamera: number = 0;
 
+    static TypeAmmo: number = 0;
+
     static CanMove: number = 0;
     static CanShoot: number = 0;
 }

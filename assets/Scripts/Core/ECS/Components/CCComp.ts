@@ -16,5 +16,7 @@ export abstract class CCComp extends Component implements ecs.IComp {
         this.ent.add(this);    
     }
 
-    abstract reset(): void;
+    reset() {
+        
+    }
 }
