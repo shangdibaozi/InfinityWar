@@ -116,7 +116,7 @@ export class Player extends CCComp {
         ent.add(ECSTag.CanShoot);
     }
 
-    reset() {
-
+    addAmmo(amount: number) {
+        this.shootDetail.ammo = Math.min(this.shootDetail.ammo + amount, this.shootDetail.maxAmmo);
     }
 }

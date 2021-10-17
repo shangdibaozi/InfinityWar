@@ -33,6 +33,7 @@ export class Bullet extends CCComp {
         let ent = this.ent;
         ent.add(ECSTag.CanMove);
         ent.add(CCNodeComponent).val = this.node;
+        // ent.add(LifeTimerComponent).init(3);
         // ent.add(MovementComponent);
     }
 
@@ -51,11 +52,14 @@ export class Bullet extends CCComp {
         move.pos.set(pos);
         this.node.angle = move.calcAngle();
 
+        // ent.add(LifeTimerComponent).init(3);
+
         this.c2d.group = PhysicsGroup.Bullet;
     }
 
     onCollision() {
         ObjPool.putNode(this.node);
+        // this.ent.remove(LifeTimerComponent);
         // this.ent.remove(ECSTag.CanMove);
         this.ent.remove(MovementComponent, false);
 

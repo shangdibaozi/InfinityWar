@@ -10,7 +10,8 @@ const { ccclass, property } = _decorator;
 let Bullet_Contact_Wall = PhysicsGroup.Bullet | PhysicsGroup.Wall;
 let Player_Contact_Wall = PhysicsGroup.Player | PhysicsGroup.Wall;
 let Player_Contact_Collectable = PhysicsGroup.Player | PhysicsGroup.Collectable;
-
+let Player_Contact_Enemy = PhysicsGroup.Player | PhysicsGroup.Enemy;
+let Bullet_Contact_Enemy = PhysicsGroup.Bullet | PhysicsGroup.Enemy;
 
 @ccclass('CollisionCheck')
 export class CollisionCheck extends Component {
@@ -46,10 +47,19 @@ export class CollisionCheck extends Component {
             }
             case Player_Contact_Collectable: {
                 let ammo = selfCollider.node;
+                let player = otherCollider.node;
                 if(selfCollider.group & PhysicsGroup.Player) {
                     ammo = otherCollider.node;
+                    player = selfCollider.node;
                 }
                 ammo.getComponent(Ammo).onCollision();
+                ecs.getSingleton(Player).addAmmo(5);
+            }
+            case Player_Contact_Enemy: {
+
+            }
+            case Bullet_Contact_Enemy: {
+
             }
         }
     }

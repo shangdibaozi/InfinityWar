@@ -13,6 +13,11 @@ export class Resources extends CCComp {
     })
     ammo: Prefab;
 
+    @property({
+        type: Prefab
+    })
+    rock: Prefab;
+
     onLoad() {
         ecs.addSingleton(this);
     }

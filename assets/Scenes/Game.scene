@@ -278,7 +278,7 @@
     "_priority": 1073741824,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 450.15063731170335,
+    "_orthoHeight": 549.4766619519095,
     "_near": 1,
     "_far": 2000,
     "_color": {
@@ -3051,6 +3051,7 @@
   },
   {
     "__type__": "ShootComopnent",
+    "maxAmmo": 100,
     "interval": 0.2,
     "shootPoint1": {
       "__id__": 97
@@ -3156,6 +3157,10 @@
     "__prefab": null,
     "ammo": {
       "__uuid__": "0ca0133e-91a4-407d-b06e-80e94a1a04b4",
+      "__expectedType__": "cc.Prefab"
+    },
+    "rock": {
+      "__uuid__": "e507f6dc-014c-40e9-bb15-fbd941a42a86",
       "__expectedType__": "cc.Prefab"
     },
     "_id": "3fRfHCYVNNH7bDceicQ2GG"

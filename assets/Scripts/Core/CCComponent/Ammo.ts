@@ -24,8 +24,8 @@ export class Ammo extends CCComp {
         
         this.c2d = this.getComponent(Collider2D);
 
-        this.ent.add(MovementComponent);
-
+        this.ent.add(this.movement);
+        this.ent.add(ECSTag.TypeAmmo);
         this.ent.add(CCNodeComponent).val = this.node;
     }
 
@@ -35,8 +35,15 @@ export class Ammo extends CCComp {
     }
     
     reset() {
-        this.movement.speed = Util.randomRange(20, 50);
-        this.movement.maxSpeed = this.movement.speed;
+        let movement = this.movement;
+        movement.speed = Util.randomRange(20, 50);
+        movement.angleSpeed = Util.randomRange(200, 400);
+        if(Math.random() > 0.5) {
+            movement.angleSpeed *= -1;
+        }
+        movement.maxSpeed = movement.speed;
+        movement.isSelfRotate = true;
+
         this.angleSpeed = Util.randomRange(40, 100);
         this.c2d.group = PhysicsGroup.Collectable;
     }

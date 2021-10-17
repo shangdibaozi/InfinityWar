@@ -14,6 +14,11 @@ let FlashTime = 2 / 60;
 export class ShootComopnent extends ecs.Comp {
     private timer: number = 0;
 
+
+    ammo: number = 0;
+    @property
+    maxAmmo: number = 100;
+
     @property
     interval: number = 1;
 

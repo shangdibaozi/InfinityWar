@@ -3,6 +3,7 @@ import { AmmoSystem } from "./AmmoSystem";
 import { BoostSystem } from "./BoostSystem";
 import { LifeTimerSystem } from "./LifeTimerSystem";
 import { MoveSystem } from "./MoveSystem";
+import { RockSystem } from "./RockSystem";
 import { ShakeSystem } from "./ShakeSystem";
 import { ShootSystem } from "./ShootSystem";
 
@@ -13,7 +14,9 @@ export class RootSystem extends ecs.RootSystem {
 
         this.add(new BoostSystem());
         this.add(new MoveSystem());
+
         this.add(new AmmoSystem());
+        this.add(new RockSystem());
         
         this.add(new ShootSystem());
         this.add(new ShakeSystem());

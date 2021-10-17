@@ -17,6 +17,11 @@ export abstract class CCComp extends Component implements ecs.IComp {
     }
 
     reset() {
-        
+
+    }
+
+    onDestroy() {
+        this.ent.destroy();
+        this.ent = null;
     }
 }

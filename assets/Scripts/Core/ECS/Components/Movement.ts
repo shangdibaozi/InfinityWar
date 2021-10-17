@@ -21,6 +21,10 @@ export class MovementComponent extends ecs.Comp {
 
     angle: number = 0;
 
+    angleSpeed: number = 0;
+
+    isSelfRotate: boolean = false;
+
     speed: number = 0;
 
     @property
@@ -52,6 +56,10 @@ export class MovementComponent extends ecs.Comp {
         this.speed = Math.min(this.speed + this.acceleration * dt, this._maxSpeed);
 
         this.pos.add3f(this.heading.x * this.speed * dt, this.heading.y * this.speed * dt, 0);
+
+        if(this.isSelfRotate) {
+            this.angle += this.angleSpeed * dt;
+        }
     }
 
     updateHeading() {
@@ -60,7 +68,9 @@ export class MovementComponent extends ecs.Comp {
             outV3.multiplyScalar(0.025);
             this.heading.add(outV3);
             this.heading.normalize();
-            this.angle = toDegree(Math.atan2(this.heading.y, this.heading.x)) - 90;
+            if(!this.isSelfRotate) {
+                this.angle = toDegree(Math.atan2(this.heading.y, this.heading.x)) - 90;
+            }
         }
     }
 
