@@ -23,6 +23,8 @@ export class Bullet extends CCComp {
     })
     c2d: Collider2D;
 
+    damage: number = 100;
+
     onLoad() {
         super.onLoad();
 

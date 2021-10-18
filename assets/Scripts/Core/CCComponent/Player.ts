@@ -88,7 +88,7 @@ export class Player extends CCComp {
         this.ent.get(MovementComponent).targetHeading.set(heading);
     }
 
-    dead() {
+    die() {
         this.trail.active = false;
         this.shootDetail.hideFlash();
         this.bc2d.group = PhysicsGroup.DEFAULT; // 取消碰撞检测

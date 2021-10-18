@@ -37,12 +37,16 @@ export class Enemy extends CCComp {
     onHit(damage: number) {
         this.health.hp = Math.max(this.health.hp - damage, 0);
         if(this.health.hp <= 0) {
-            this.c2d.group = PhysicsGroup.DEFAULT;
-            this.ent.remove(ECSTag.CanMove);
-            ObjPool.putNode(this.node);
+            this.die();
         }
         else {
             // hit flash
         }
+    }
+
+    die() {
+        this.c2d.group = PhysicsGroup.DEFAULT;
+        this.ent.remove(ECSTag.CanMove);
+        ObjPool.putNode(this.node);
     }
 }

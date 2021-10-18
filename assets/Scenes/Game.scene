@@ -2318,7 +2318,7 @@
         "__id__": 113
       },
       {
-        "__id__": 114
+        "__id__": 117
       }
     ],
     "_prefab": null,
@@ -2997,33 +2997,6 @@
     "fileId": "55pCbtzR5GbojKMArZkfim"
   },
   {
-    "__type__": "cc.RigidBody2D",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 87
-    },
-    "_enabled": true,
-    "__prefab": null,
-    "enabledContactListener": false,
-    "bullet": false,
-    "awakeOnLoad": true,
-    "_group": 1,
-    "_type": 1,
-    "_allowSleep": false,
-    "_gravityScale": 0,
-    "_linearDamping": 0,
-    "_angularDamping": 0,
-    "_linearVelocity": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_angularVelocity": 0,
-    "_fixedRotation": false,
-    "_id": "a0NOuj/opIKZy24dMd+eaS"
-  },
-  {
     "__type__": "83cdcqEzFZJM5XFQdEKi7Fq",
     "_name": "",
     "_objFlags": 0,
@@ -3039,13 +3012,13 @@
       "__id__": 88
     },
     "shootDetail": {
-      "__id__": 115
+      "__id__": 114
     },
     "movement": {
-      "__id__": 116
+      "__id__": 115
     },
     "boost": {
-      "__id__": 117
+      "__id__": 116
     },
     "_id": "edtWimjSxKCJQ98DopB9LW"
   },
@@ -3072,8 +3045,8 @@
   },
   {
     "__type__": "MovementComponent",
-    "acceleration": 300,
-    "_maxSpeed": 250,
+    "acceleration": 200,
+    "_maxSpeed": 150,
     "heading": {
       "__type__": "cc.Vec3",
       "x": 0,
@@ -3095,6 +3068,33 @@
     "maxBoost": 100,
     "addBoostSpeed": 10,
     "subBoostSpeed": 50
+  },
+  {
+    "__type__": "cc.BoxCollider2D",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 87
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "tag": 0,
+    "_group": 64,
+    "_density": 1,
+    "_sensor": false,
+    "_friction": 0.2,
+    "_restitution": 0,
+    "_offset": {
+      "__type__": "cc.Vec2",
+      "x": 0.3,
+      "y": 0
+    },
+    "_size": {
+      "__type__": "cc.Size",
+      "width": 69.7,
+      "height": 58.7
+    },
+    "_id": "aa7thjd5BKvaK66FhXaCtt"
   },
   {
     "__type__": "cc.UITransform",
