@@ -35,17 +35,16 @@ export class Bullet extends CCComp {
         let ent = this.ent;
         ent.add(ECSTag.CanMove);
         ent.add(CCNodeComponent).val = this.node;
-        // ent.add(LifeTimerComponent).init(3);
-        // ent.add(MovementComponent);
+        ent.add(MovementComponent);
     }
 
-    init(pos: Vec3, heading: Vec3, targetHeading: Vec3) {
+    init(pos: Vec3, heading: Vec3, targetHeading: Vec3, group: number) {
         this.node.setPosition(pos);
 
         let ent = this.ent;
         ent.add(ECSTag.CanMove);
         ent.get(CCNodeComponent).val = this.node;
-        let move = ent.add(MovementComponent);
+        let move = ent.get(MovementComponent);
         move.heading.set(heading);
         move.targetHeading.set(targetHeading);
         move.speed = 500;
@@ -56,14 +55,13 @@ export class Bullet extends CCComp {
 
         // ent.add(LifeTimerComponent).init(3);
 
-        this.c2d.group = PhysicsGroup.Bullet;
+        this.c2d.group = group;
     }
 
     onCollision() {
         ObjPool.putNode(this.node);
-        // this.ent.remove(LifeTimerComponent);
-        // this.ent.remove(ECSTag.CanMove);
-        this.ent.remove(MovementComponent, false);
+        // this.ent.remove(MovementComponent, false);
+        this.ent.remove(ECSTag.CanMove);
 
         let effect = ObjPool.getNode(this.collisionEffect.data.name, this.collisionEffect);
         effect.parent = Global.bulletLayer;

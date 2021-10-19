@@ -54,7 +54,9 @@ export class Player extends CCComp {
         let ent = this.ent;
 
         ent.add(ECSTag.TypePlayer);
-        ent.add(this.shootDetail).add(this.movement).add(this.boost);
+        ent.add(this.shootDetail);
+        ent.add(this.movement);
+        ent.add(this.boost);
         ent.add(CCNodeComponent).val = this.node;
         ent.add(ECSTag.CanMove);
         ent.add(ECSTag.CanShoot);
@@ -98,6 +100,10 @@ export class Player extends CCComp {
         ent.remove(ECSTag.CanShoot);
         
         ent.add(ShakeComponent).shake(5, 80, 0.2);
+    }
+
+    onHit(amount: number) {
+        
     }
 
     relive() {

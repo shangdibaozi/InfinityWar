@@ -3086,8 +3086,8 @@
     "_restitution": 0,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": 0.3,
-      "y": 0
+      "x": 0.5,
+      "y": 2.4
     },
     "_size": {
       "__type__": "cc.Size",
@@ -3161,6 +3161,10 @@
     },
     "rock": {
       "__uuid__": "e507f6dc-014c-40e9-bb15-fbd941a42a86",
+      "__expectedType__": "cc.Prefab"
+    },
+    "enemy1": {
+      "__uuid__": "4071a7f3-ff1f-476e-9eb0-86309715d835",
       "__expectedType__": "cc.Prefab"
     },
     "_id": "3fRfHCYVNNH7bDceicQ2GG"

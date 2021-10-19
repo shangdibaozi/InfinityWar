@@ -7,6 +7,7 @@ import { CCComp } from '../ECS/Components/CCComp';
 import { ECSTag } from '../ECS/Components/ECSTag';
 import { HealthComp } from '../ECS/Components/HealthComp';
 import { CCNodeComponent, MovementComponent } from '../ECS/Components/Movement';
+import { ShootComopnent } from '../ECS/Components/ShootComponent';
 const { ccclass, property } = _decorator;
 
 @ecs.register('Enemy', false)
@@ -14,7 +15,16 @@ const { ccclass, property } = _decorator;
 export class Enemy extends CCComp {
     c2d: Collider2D = null;
 
-    movement: MovementComponent = new MovementComponent();
+    @property({
+        type: MovementComponent
+    })
+    movement: MovementComponent = null;
+
+    @property({
+        type: ShootComopnent
+    })
+    shootDetail: ShootComopnent;
+
     health: HealthComp = new HealthComp();
 
     onLoad() {
@@ -24,8 +34,13 @@ export class Enemy extends CCComp {
 
         this.ent.add(this.movement);
         this.ent.add(this.health);
+        this.ent.add(this.shootDetail);
         this.ent.add(ECSTag.CanMove);
+        this.ent.add(ECSTag.CanShoot);
+        this.ent.add(ECSTag.TypeEnemy);
         this.ent.add(CCNodeComponent).val = this.node;
+
+        this.shootDetail.hideFlash();
     }
 
     onEnable() {
@@ -45,6 +60,7 @@ export class Enemy extends CCComp {
     }
 
     die() {
+        this.shootDetail.hideFlash();
         this.c2d.group = PhysicsGroup.DEFAULT;
         this.ent.remove(ECSTag.CanMove);
         ObjPool.putNode(this.node);

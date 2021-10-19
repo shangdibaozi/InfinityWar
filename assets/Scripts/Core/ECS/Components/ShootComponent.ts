@@ -1,8 +1,11 @@
 import { Canvas, director, instantiate, Node, Prefab, Sprite, tween, UIComponent, UITransform, v3, Vec3, _decorator } from 'cc';
 import { ObjPool } from '../../../Common/ObjPool';
+import { PhysicsGroup } from '../../../Constants';
 import { Global } from '../../../Global';
 import { ecs } from "../../../Libs/ECS";
 import { Bullet } from '../../CCComponent/Bullet';
+import { ECSTag } from './ECSTag';
+import { MovementComponent } from './Movement';
 const { ccclass, property } = _decorator;
 
 
@@ -103,31 +106,20 @@ export class ShootComopnent extends ecs.Comp {
 
     createBullet(point: Node) {
         let node = ObjPool.getNode(this.bulletPrefab.data.name, this.bulletPrefab);
-        node.active = true;
         node.parent = Global.bulletLayer;
         Global.gameLayer.getComponent(UITransform).convertToNodeSpaceAR(point.getWorldPosition(outv3), outv3);
 
-        node.getComponent(Bullet).init(outv3, this.heading, this.heading);
+        let gruop = -1;
+        if(this.ent.has(ECSTag.TypePlayer)) {
+            gruop = PhysicsGroup.Bullet;
+        }
+        else if(this.ent.has(ECSTag.TypeEnemy)) {
+            gruop = PhysicsGroup.Bullet_Enemy;
+        }
+        else {
+            debugger;
+        }
 
-        // node.setPosition(outv3);
-
-        // let entLink = node.getComponent(EntLink);
-        // if(!entLink) {
-        //     entLink = node.addComponent(EntLink);
-        // }
-
-        // let ent = BulletEntity.create();
-        // ent.add(ECSTag.CanMove);
-        // entLink.ent = ent;
-        // ent.CCNode.val = node;
-        // let move = ent.Movement;
-        // move.heading.set(this.heading);
-        // move.targetHeading.set(this.heading);
-        // move.speed = 500;
-        // move.maxSpeed = 500;
-        // move.acceleration = 500;
-        // move.pos.set(outv3);
-        // node.angle = move.calcAngle();
-        
+        node.getComponent(Bullet).init(outv3, this.heading, this.heading, gruop);
     }
 }

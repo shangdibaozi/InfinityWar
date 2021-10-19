@@ -440,7 +440,7 @@ export module ecs {
         // add<T extends IComp>(ctor: CompCtor<T>, isReAdd?: boolean): T;
         add<T extends IComp>(ctor: CompType<T>, isReAdd?: boolean): T;
         add<T extends IComp>(ctor: CompType<T> | T, isReAdd: boolean = false): T | Entity  {
-            console.log('typeof: ', typeof ctor);
+            // console.log('typeof: ', typeof ctor);
             if(typeof ctor === 'function') {
                 let compTid = ctor.tid;
                 if(ctor.tid === -1) {

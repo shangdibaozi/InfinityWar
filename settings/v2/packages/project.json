@@ -33,16 +33,21 @@
       {
         "index": 6,
         "name": "Player_Collectable"
+      },
+      {
+        "index": 7,
+        "name": "Bullet_Enemy"
       }
     ],
     "collisionMatrix": {
       "0": 1,
-      "1": 12,
+      "1": 140,
       "2": 34,
-      "3": 34,
+      "3": 162,
       "4": 64,
       "5": 12,
-      "6": 16
+      "6": 16,
+      "7": 10
     }
   }
 }

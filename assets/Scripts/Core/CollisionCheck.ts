@@ -14,6 +14,9 @@ let Player_Contact_Collectable = PhysicsGroup.Player_Collectable | PhysicsGroup.
 let Player_Contact_Enemy = PhysicsGroup.Player | PhysicsGroup.Enemy;
 let Bullet_Contact_Enemy = PhysicsGroup.Bullet | PhysicsGroup.Enemy;
 
+let Bullet_Enemy_Contact_Wall = PhysicsGroup.Bullet_Enemy | PhysicsGroup.Wall;
+let Bullet_Enemy_Contact_Player = PhysicsGroup.Bullet_Enemy | PhysicsGroup.Player;
+
 @ccclass('CollisionCheck')
 export class CollisionCheck extends Component {
 
@@ -35,6 +38,7 @@ export class CollisionCheck extends Component {
         this.refreshNode(selfCollider);
         this.refreshNode(otherCollider);
         switch(mask) {
+            case Bullet_Enemy_Contact_Wall:
             case Bullet_Contact_Wall: {
                 this.bullet.getComponent(Bullet).onCollision()
                 break;
@@ -62,6 +66,11 @@ export class CollisionCheck extends Component {
                 this.bullet.onCollision();
                 break;
             }
+            case Bullet_Enemy_Contact_Player: {
+                ecs.getSingleton(Player).onHit(5);
+                this.bullet.onCollision();
+                break;
+            }
         }
 
         this.bullet = null;
@@ -80,6 +89,10 @@ export class CollisionCheck extends Component {
                 break;
             }
             case PhysicsGroup.Bullet: {
+                this.bullet = collider.getComponent(Bullet);
+                break;
+            }
+            case PhysicsGroup.Bullet_Enemy: {
                 this.bullet = collider.getComponent(Bullet);
                 break;
             }

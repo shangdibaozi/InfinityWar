@@ -35,6 +35,7 @@ export class Boost extends Component {
     initCommonSys() {
         ecs.createEntityWithComp(ECSTag.TypeFactoryAmmo);
         ecs.createEntityWithComp(ECSTag.TypeFactoryRock);
+        ecs.createEntityWithComp(ECSTag.TypeFactoryEnemy);
     }
 
     update(dt: number) {

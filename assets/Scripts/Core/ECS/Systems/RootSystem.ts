@@ -1,6 +1,7 @@
 import { ecs } from "../../../Libs/ECS";
-import { AmmoSystem } from "./AmmoSystem";
+import { AmmoFactory } from "./Factory/AmmoFactory";
 import { BoostSystem } from "./BoostSystem";
+import { Factory } from "./Factory/Factory";
 import { LifeTimerSystem } from "./LifeTimerSystem";
 import { MoveSystem } from "./MoveSystem";
 import { RockSystem } from "./RockSystem";
@@ -12,11 +13,13 @@ export class RootSystem extends ecs.RootSystem {
     constructor() {
         super();
 
+        this.add(new Factory());
+
         this.add(new BoostSystem());
         this.add(new MoveSystem());
 
-        this.add(new AmmoSystem());
-        this.add(new RockSystem());
+        this.add(new AmmoFactory());
+        // this.add(new RockSystem());
         
         this.add(new ShootSystem());
         this.add(new ShakeSystem());
