@@ -11,11 +11,11 @@ const { ccclass, property } = _decorator;
 
 let outv3 = v3();
 
-let FlashTime = 2 / 60;
+
 @ccclass('ShootComopnent')
 @ecs.register('Shoot')
 export class ShootComopnent extends ecs.Comp {
-    private timer: number = 0;
+    timer: number = 0;
 
 
     ammo: number = 0;
@@ -73,36 +73,7 @@ export class ShootComopnent extends ecs.Comp {
         }
     }
 
-    shoot(dt: number, heading: Vec3) {
-        this.timer += dt;
-        this.heading.set(heading);
-        if(this.timer >= this.interval) {
-            this.timer -= this.interval;
-            if(this.shootPoint1) {
-                this.createBullet(this.shootPoint1);
-                this.flash1Time = FlashTime;
-                this.flash1.active = true;
-            }
-            if (this.shootPoint2) {
-                this.createBullet(this.shootPoint2);
-                this.flash2Time = FlashTime;
-                this.flash2.active = true;
-            }
-        }
-
-        if(this.flash1Time > 0) {
-            this.flash1Time -= dt;
-            if(this.flash1Time <= 0) {
-                this.flash1.active = false;
-            }
-        }
-        if(this.flash2Time > 0) {
-            this.flash2Time -= dt;
-            if(this.flash2Time <= 0) {
-                this.flash2.active = false;
-            }
-        }
-    }
+    
 
     createBullet(point: Node) {
         let node = ObjPool.getNode(this.bulletPrefab.data.name, this.bulletPrefab);

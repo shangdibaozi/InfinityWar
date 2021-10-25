@@ -1,10 +1,11 @@
 
-import { _decorator, Component, Vec3, v3, BoxCollider2D, Node, systemEvent, SystemEvent, EventKeyboard, KeyCode } from 'cc';
+import { _decorator, Component, Vec3, v3, BoxCollider2D, Node, systemEvent, SystemEvent, EventKeyboard, KeyCode, CCInteger } from 'cc';
 import { PhysicsGroup, UI_EVENT } from '../../Constants';
 import { Global } from '../../Global';
 import { ecs } from '../../Libs/ECS';
 import { CCComp } from '../ECS/Components/CCComp';
 import { ECSTag } from '../ECS/Components/ECSTag';
+import { HealthComp } from '../ECS/Components/HealthComp';
 import { MovementComponent, CCNodeComponent, BoostComp } from '../ECS/Components/Movement';
 import { ShakeComponent } from '../ECS/Components/ShakeComponent';
 import { ShootComopnent } from '../ECS/Components/ShootComponent';
@@ -40,10 +41,19 @@ export class Player extends CCComp {
         type: BoostComp
     })
     boost: BoostComp;
+
+    health: HealthComp = new HealthComp();
+
+    @property({
+        type: CCInteger
+    })
+    maxHp: number = 100;
     
     originalPos: Vec3 = v3();
     defaultHeading: Vec3 = v3();
     defaltTargetHeading: Vec3 = v3();
+
+    score: number = 0;
 
     onLoad() {
         super.onLoad();
@@ -60,7 +70,8 @@ export class Player extends CCComp {
         ent.add(CCNodeComponent).val = this.node;
         ent.add(ECSTag.CanMove);
         ent.add(ECSTag.CanShoot);
-        this.addComponent(EntLink).ent = ent;
+        ent.add(this.health);
+        this.health.init(this.maxHp);
 
         this.shootDetail.hideFlash();
 
@@ -86,6 +97,12 @@ export class Player extends CCComp {
         });
     }
 
+    onEnable() {
+        let health = this.ent.get(HealthComp);
+        Global.uiEvent.emit(UI_EVENT.UPDATE_HP, health.hp, health.maxHp);
+        Global.uiEvent.emit(UI_EVENT.UPDATE_SCORE, 0);
+    }
+
     onPlayerMove(heading: Vec3) {
         this.ent.get(MovementComponent).targetHeading.set(heading);
     }
@@ -102,8 +119,13 @@ export class Player extends CCComp {
         ent.add(ShakeComponent).shake(5, 80, 0.2);
     }
 
-    onHit(amount: number) {
-        
+    onHit(damage: number = 10) {
+        this.health.hp -= damage;
+        if(this.health.hp <= 0) {
+            this.health.hp = 0;
+            this.die();
+        }
+        Global.uiEvent.emit(UI_EVENT.UPDATE_HP, this.health.hp, this.health.maxHp);
     }
 
     relive() {
@@ -120,9 +142,18 @@ export class Player extends CCComp {
         this.movement.targetHeading.set(this.defaltTargetHeading);
         ent.add(ECSTag.CanMove);
         ent.add(ECSTag.CanShoot);
+
+        this.health.init(this.maxHp);
+        this.score = 0;
+
+        Global.uiEvent.emit(UI_EVENT.UPDATE_HP, this.health.hp, this.health.maxHp);
+        Global.uiEvent.emit(UI_EVENT.UPDATE_SCORE, this.score);
     }
 
     addAmmo(amount: number) {
         this.shootDetail.ammo = Math.min(this.shootDetail.ammo + amount, this.shootDetail.maxAmmo);
+
+        this.score += 50;
+        Global.uiEvent.emit(UI_EVENT.UPDATE_SCORE, this.score);
     }
 }
