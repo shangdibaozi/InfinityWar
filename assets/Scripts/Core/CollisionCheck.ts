@@ -6,13 +6,18 @@ import { Ammo } from './CCComponent/Ammo';
 import { Bullet } from './CCComponent/Bullet';
 import { Enemy } from './CCComponent/Enemy';
 import { Player } from './CCComponent/Player';
+import { Rock } from './CCComponent/Rock';
 const { ccclass, property } = _decorator;
 
 let Bullet_Contact_Wall = PhysicsGroup.Bullet | PhysicsGroup.Wall;
 let Player_Contact_Wall = PhysicsGroup.Player | PhysicsGroup.Wall;
 let Player_Contact_Collectable = PhysicsGroup.Player_Collectable | PhysicsGroup.Collectable;
+
 let Player_Contact_Enemy = PhysicsGroup.Player | PhysicsGroup.Enemy;
 let Bullet_Contact_Enemy = PhysicsGroup.Bullet | PhysicsGroup.Enemy;
+
+let Player_Contact_Rock = PhysicsGroup.Player | PhysicsGroup.Rock;
+let Bullet_Contact_Rock = PhysicsGroup.Bullet | PhysicsGroup.Rock;
 
 let Bullet_Enemy_Contact_Wall = PhysicsGroup.Bullet_Enemy | PhysicsGroup.Wall;
 let Bullet_Enemy_Contact_Player = PhysicsGroup.Bullet_Enemy | PhysicsGroup.Player;
@@ -24,6 +29,7 @@ export class CollisionCheck extends Component {
     bullet: Bullet;
     enemy: Enemy;
     ammo: Ammo;
+    rock: Rock;
 
     onLoad() {
         if(PhysicsSystem2D.instance) {
@@ -66,6 +72,16 @@ export class CollisionCheck extends Component {
                 this.bullet.onCollision();
                 break;
             }
+            case Player_Contact_Rock: {
+                this.rock.onHit(10);
+                ecs.getSingleton(Player).onHit(20);
+                break;
+            }
+            case Bullet_Contact_Rock: {
+                this.rock.onHit(10);
+                this.bullet.onCollision();
+                break;
+            }
             case Bullet_Enemy_Contact_Player: {
                 ecs.getSingleton(Player).onHit(5);
                 this.bullet.onCollision();
@@ -94,6 +110,10 @@ export class CollisionCheck extends Component {
             }
             case PhysicsGroup.Bullet_Enemy: {
                 this.bullet = collider.getComponent(Bullet);
+                break;
+            }
+            case PhysicsGroup.Rock: {
+                this.rock = collider.getComponent(Rock);
                 break;
             }
         }

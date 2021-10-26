@@ -34,5 +34,6 @@ export enum PhysicsGroup {
     Collectable = 1 << 4,
     Enemy = 1 << 5,
     Player_Collectable = 1 << 6,
-    Bullet_Enemy = 1 << 7
+    Bullet_Enemy = 1 << 7,
+    Rock = 1 << 8
 }

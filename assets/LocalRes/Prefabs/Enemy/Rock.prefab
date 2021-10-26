@@ -146,7 +146,7 @@
       "__id__": 7
     },
     "tag": 0,
-    "_group": 32,
+    "_group": 256,
     "_density": 1,
     "_sensor": false,
     "_friction": 0.2,
@@ -164,7 +164,7 @@
     "fileId": "3bpLOfKohP7os0RClkqu0H"
   },
   {
-    "__type__": "54cbe2k05FAcLaLBF2/g3Mp",
+    "__type__": "184d27ofJpCVriXZy2SzA+7",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -178,7 +178,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "16Od0bFthMXacNrlB5r+qJ"
+    "fileId": "98PJBdwG5Ki7ATlrGouOMu"
   },
   {
     "__type__": "cc.PrefabInfo",

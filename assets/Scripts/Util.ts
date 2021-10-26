@@ -12,6 +12,10 @@ export class Util {
         return Math.random() * (maxVal - minVal) + minVal;
     }
 
+    static randomRangeInt(minVal: number, maxVal: number) {
+        return Math.floor(this.randomRange(minVal, maxVal));
+    }
+
     /**
      * 求以n为底x的对数
      * @param x 待求数
@@ -68,8 +72,14 @@ export class Util {
      * 快速删除数组中的指定元素
      * @param arr 
      */
-    static arrFastRemove(arr: any[], delObj: any) {
-        let idx = arr.indexOf(delObj);
+    static arrFastRemove(arr: any[], delObj: object | number) {
+        let idx = -1;
+        if(typeof delObj === 'number') {
+            idx = delObj;
+        }
+        else {
+            idx = arr.indexOf(delObj);
+        }
         if (idx >= 0) {
             arr[idx] = arr[arr.length - 1];
             arr.length--;

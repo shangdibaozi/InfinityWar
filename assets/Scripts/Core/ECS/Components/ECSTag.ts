@@ -14,9 +14,7 @@ export class ECSTag {
 
     static TypeRock: number = 0;
 
-    static TypeFactoryAmmo: number = 0;
-    static TypeFactoryRock: number = 0;
-    static TypeFactoryEnemy: number = 0;
+    static TypeObjFactory: number = 0;
 
     static CanMove: number = 0;
     static CanShoot: number = 0;
