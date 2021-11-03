@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node, Collider2D } from 'cc';
+import { _decorator, Component, Node, Collider2D, RigidBody2D } from 'cc';
 import { ObjPool } from '../../Common/ObjPool';
 import { PhysicsGroup } from '../../Constants';
 import { ecs } from '../../Libs/ECS';
@@ -12,8 +12,10 @@ const { ccclass, property } = _decorator;
 @ecs.register('Rock')
 @ccclass('Rock')
 export class Rock extends CCComp {
-    
-    c2d: Collider2D = null;
+    @property({
+        type: RigidBody2D
+    })
+    rb2d: RigidBody2D;
 
     health: HealthComp = new HealthComp();
     movement: MovementComponent = new MovementComponent();
@@ -21,16 +23,14 @@ export class Rock extends CCComp {
     onLoad() {
         super.onLoad();
 
-        this.c2d = this.getComponent(Collider2D);
-
         this.ent.add(this.health);
         this.ent.add(this.movement);
         this.ent.add(CCNodeComponent).val = this.node;
     }
 
     onEnable() {
+        this.rb2d.wakeUp();
         this.health.init(100);
-        this.c2d.group = PhysicsGroup.Rock;
         this.ent.add(ECSTag.CanMove);
     }
 
@@ -43,8 +43,8 @@ export class Rock extends CCComp {
     }
 
     die() {
+        this.rb2d.sleep();
         this.ent.remove(ECSTag.CanMove);
-        this.c2d.group = PhysicsGroup.DEFAULT;
         ObjPool.putNode(this.node);
     }
 }

@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node, Collider2D } from 'cc';
+import { _decorator, Component, Node, Collider2D, RigidBody2D } from 'cc';
 import { ObjPool } from '../../Common/ObjPool';
 import { PhysicsGroup } from '../../Constants';
 import { ecs } from '../../Libs/ECS';
@@ -13,7 +13,11 @@ const { ccclass, property } = _decorator;
 @ecs.register('Enemy', false)
 @ccclass('Enemy')
 export class Enemy extends CCComp {
-    c2d: Collider2D = null;
+
+    @property({
+        type: RigidBody2D
+    })
+    rb2d: RigidBody2D;
 
     @property({
         type: MovementComponent
@@ -30,8 +34,6 @@ export class Enemy extends CCComp {
     onLoad() {
         super.onLoad();
 
-        this.c2d = this.getComponent(Collider2D);
-
         this.ent.add(this.movement);
         this.ent.add(this.health);
         this.ent.add(this.shootDetail);
@@ -45,8 +47,8 @@ export class Enemy extends CCComp {
 
     onEnable() {
         this.health.init(100);
-        this.c2d.group = PhysicsGroup.Enemy;
         this.ent.add(ECSTag.CanMove);
+        this.rb2d.wakeUp();
     }
 
     onHit(damage: number) {
@@ -60,8 +62,8 @@ export class Enemy extends CCComp {
     }
 
     die() {
+        this.rb2d.sleep();
         this.shootDetail.hideFlash();
-        this.c2d.group = PhysicsGroup.DEFAULT;
         this.ent.remove(ECSTag.CanMove);
         ObjPool.putNode(this.node);
     }

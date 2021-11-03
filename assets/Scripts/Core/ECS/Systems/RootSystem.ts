@@ -5,13 +5,14 @@ import { MoveSystem } from "./MoveSystem";
 import { ShakeSystem } from "./ShakeSystem";
 import { ShootSystem } from "./ShootSystem";
 import { ObjFactory } from "./ObjFactory";
+import { CollisionCheckSystem } from "./CollisionCheckSystem";
 
 export class RootSystem extends ecs.RootSystem {
 
     constructor() {
         super();
 
-        this.add(new ObjFactory());
+        // this.add(new ObjFactory());
 
         this.add(new BoostSystem());
         this.add(new MoveSystem());
@@ -19,6 +20,7 @@ export class RootSystem extends ecs.RootSystem {
         this.add(new ShootSystem());
         this.add(new ShakeSystem());
 
+        this.add(new CollisionCheckSystem());
         
         this.add(new LifeTimerSystem());
 

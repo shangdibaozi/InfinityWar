@@ -6,6 +6,15 @@ import { Player } from "../../CCComponent/Player";
 import { ECSTag } from "../Components/ECSTag";
 import { CCNodeComponent, MovementComponent } from "../Components/Movement";
 
+/**
+ * 没有物理来控制移动和转向，主要是让飞机按旋转到运动方向部分写起来非常麻烦，或者说是不知道怎么写，可能是现阶段引擎的问题。
+ * 
+ * 通过看引擎源码发现，其实通过非物理方式控制刚体运动，引擎也会把物体的坐标点同步到
+ * 物理系统上。详见rigid-body.ts中的_onNodeTransformChanged方法。
+ * 
+ * 钢铁运动结点同步到渲染层的调用流程是
+ * director的tick方法->physics-system的postUpdate方法->physics-world的syncPhysicsToScene方法
+ */
 export class MoveSystem extends ecs.ComblockSystem {
 
     minX: number = 0;
@@ -44,7 +53,9 @@ export class MoveSystem extends ecs.ComblockSystem {
             ccnode.val.setPosition(move.pos);
             ccnode.val.angle = move.angle;
 
-            this.outofRangeCheck(move.pos, ent);
+            if(!ent.has(ECSTag.TypePlayer)) {
+                this.outofRangeCheck(move.pos, ent);
+            }
         }
     }
 

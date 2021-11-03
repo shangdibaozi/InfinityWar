@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Component, Node, PhysicsSystem2D, EPhysics2DDrawFlags } from 'cc';
 import { Global } from '../../Global';
 import { ecs } from '../../Libs/ECS';
 import { ECSTag } from './Components/ECSTag';
@@ -23,6 +23,19 @@ export class Boost extends Component {
     rootSys: RootSystem = new RootSystem();
 
     onLoad() {
+        const phSystem = PhysicsSystem2D.instance;
+        // 物理步长，默认 fixedTimeStep 是 1/60
+        phSystem.fixedTimeStep = 1 / 30;
+        // 每次更新物理系统处理速度的迭代次数，默认为 10
+        phSystem.velocityIterations = 10;
+        // 每次更新物理系统处理位置的迭代次数，默认为 10
+        phSystem.positionIterations = 10;
+
+        PhysicsSystem2D.instance.debugDrawFlags = 
+                                    // EPhysics2DDrawFlags.Aabb | 
+                                    // EPhysics2DDrawFlags.CenterOfMass | 
+                                    EPhysics2DDrawFlags.Shape;
+
         window['ecs'] = ecs;
 
         
@@ -38,5 +51,9 @@ export class Boost extends Component {
 
     update(dt: number) {
         this.rootSys.execute(dt);
+    }
+
+    lateUpdate() {
+        
     }
 }

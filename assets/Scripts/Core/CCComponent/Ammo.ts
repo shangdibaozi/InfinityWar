@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node, utils, Vec3, v3, Collider2D } from 'cc';
+import { _decorator, Component, Node, utils, Vec3, v3, Collider2D, RigidBody2D } from 'cc';
 import { ObjPool } from '../../Common/ObjPool';
 import { PhysicsGroup } from '../../Constants';
 import { ecs } from '../../Libs/ECS';
@@ -12,17 +12,18 @@ const { ccclass, property } = _decorator;
 @ccclass('Ammo')
 @ecs.register('Ammo', false)
 export class Ammo extends CCComp {
+    @property({
+        type: RigidBody2D
+    })
+    rb2d: RigidBody2D;
+
     angle: number = 0;
     angleSpeed: number = 0;
 
     movement: MovementComponent = new MovementComponent();
 
-    c2d: Collider2D = null;
-
     onLoad() {
         super.onLoad();
-        
-        this.c2d = this.getComponent(Collider2D);
 
         this.ent.add(this.movement);
         this.ent.add(ECSTag.TypeAmmo);
@@ -45,12 +46,12 @@ export class Ammo extends CCComp {
         movement.isSelfRotate = true;
 
         this.angleSpeed = Util.randomRange(40, 100);
-        this.c2d.group = PhysicsGroup.Collectable;
+        this.rb2d.wakeUp();
     }
 
     onCollision() {
+        this.rb2d.sleep();
         ObjPool.putNode(this.node);
         this.ent.remove(ECSTag.CanMove);
-        this.c2d.group = PhysicsGroup.DEFAULT;
     }
 }

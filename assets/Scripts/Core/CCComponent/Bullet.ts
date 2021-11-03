@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node, Prefab, Vec3, BoxCollider2D, Collider2D } from 'cc';
+import { _decorator, Component, Node, Prefab, Vec3, BoxCollider2D, Collider2D, Vec2, RigidBody2D } from 'cc';
 import { ObjPool } from '../../Common/ObjPool';
 import { PhysicsGroup } from '../../Constants';
 import { Global } from '../../Global';
@@ -19,9 +19,14 @@ export class Bullet extends CCComp {
     collisionEffect: Prefab;
 
     @property({
-        type: Collider2D
+        type: RigidBody2D
     })
-    c2d: Collider2D;
+    rb2d: RigidBody2D;
+
+    @property({
+        type: MovementComponent
+    })
+    movement: MovementComponent;
 
     damage: number = 100;
 
@@ -35,7 +40,7 @@ export class Bullet extends CCComp {
         let ent = this.ent;
         ent.add(ECSTag.CanMove);
         ent.add(CCNodeComponent).val = this.node;
-        ent.add(MovementComponent);
+        ent.add(this.movement);
     }
 
     init(pos: Vec3, heading: Vec3, targetHeading: Vec3, group: number) {
@@ -44,34 +49,31 @@ export class Bullet extends CCComp {
         let ent = this.ent;
         ent.add(ECSTag.CanMove);
         ent.get(CCNodeComponent).val = this.node;
-        let move = ent.get(MovementComponent);
+        let move = this.movement;
         move.heading.set(heading);
         move.targetHeading.set(targetHeading);
-        move.speed = 500;
-        move.maxSpeed = 500;
-        move.acceleration = 500;
+        move.speed = move.maxSpeed;
         move.pos.set(pos);
         this.node.angle = move.calcAngle();
 
         // ent.add(LifeTimerComponent).init(3);
-
-        this.c2d.group = group;
+        
+        this.rb2d.wakeUp();
     }
 
-    onCollision() {
+    onCollision(bpos: Vec3) {
+        this.rb2d.sleep();
+        // console.log('<------------', this.node.uuid);
         ObjPool.putNode(this.node);
-        // this.ent.remove(MovementComponent, false);
         this.ent.remove(ECSTag.CanMove);
 
         let effect = ObjPool.getNode(this.collisionEffect.data.name, this.collisionEffect);
         effect.parent = Global.bulletLayer;
-        effect.setPosition(this.node.getPosition());
+        effect.setPosition(bpos);
 
         let ent = ecs.createEntity();
         ent.add(CCNodeComponent).val = effect;
         ent.add(LifeTimerComponent).init(0.1);
-
-        this.c2d.group = PhysicsGroup.DEFAULT;
     }
 
     reset() {

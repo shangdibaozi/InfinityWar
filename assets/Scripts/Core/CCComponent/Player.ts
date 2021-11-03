@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Vec3, v3, BoxCollider2D, Node, systemEvent, SystemEvent, EventKeyboard, KeyCode, CCInteger } from 'cc';
+import { _decorator, Component, Vec3, v3, BoxCollider2D, Node, systemEvent, SystemEvent, EventKeyboard, KeyCode, CCInteger, RigidBody2D, Collider2D, Contact2DType } from 'cc';
 import { PhysicsGroup, UI_EVENT } from '../../Constants';
 import { Global } from '../../Global';
 import { ecs } from '../../Libs/ECS';
@@ -17,10 +17,11 @@ const { ccclass, property } = _decorator;
 @ecs.register('Player', false)
 export class Player extends CCComp {
 
+    
     @property({
-        type: BoxCollider2D
+        type: RigidBody2D
     })
-    bc2d: BoxCollider2D;
+    rb2d: RigidBody2D;
 
     @property({
         type: Node
@@ -110,7 +111,7 @@ export class Player extends CCComp {
     die() {
         this.trail.active = false;
         this.shootDetail.hideFlash();
-        this.bc2d.group = PhysicsGroup.DEFAULT; // 取消碰撞检测
+        this.rb2d.sleep(); // 取消碰撞检测
         
         let ent = this.ent;
         ent.remove(ECSTag.CanMove);
@@ -132,7 +133,7 @@ export class Player extends CCComp {
         this.trail.active = true;
         this.node.setPosition(this.originalPos);
         this.node.angle = 0;
-        this.bc2d.group = PhysicsGroup.Player;
+        this.rb2d.wakeUp();
 
         let ent = this.ent;
         
