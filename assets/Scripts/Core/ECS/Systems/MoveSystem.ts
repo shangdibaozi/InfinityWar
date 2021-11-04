@@ -59,9 +59,7 @@ export class MoveSystem extends ecs.ComblockSystem {
                 outV3.multiplyScalar(0.025);
                 move.heading.add(outV3);
                 move.heading.normalize();
-                if(!move.rb2d.fixedRotation) {
-                    move.angle = toDegree(Math.atan2(move.heading.y, move.heading.x)) - 90;
-                }
+                move.angle = toDegree(Math.atan2(move.heading.y, move.heading.x)) - 90;
             }
             
             move.speed = Math.min(move.speed + move.acceleration * dt, move.maxSpeed);
@@ -70,11 +68,10 @@ export class MoveSystem extends ecs.ComblockSystem {
             move.velocity.y = move.heading.y * move.speed * dt;
             move.rb2d.linearVelocity = move.velocity;
 
-            if(!ent.has(ECSTag.TypeBullet) && !ent.has(ECSTag.TypeAmmo)) {
+            if(ent.has(ECSTag.TypePlayer) || ent.has(ECSTag.TypeEnemy)) {
                 ccnode.val.angle = move.angle;
-            }
-
-            if(!ent.has(ECSTag.TypePlayer)) {
+            } 
+            else {
                 this.outofRangeCheck(outV3, ent);
             }
         }

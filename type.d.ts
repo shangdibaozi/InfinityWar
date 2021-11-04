@@ -1,3 +1,3 @@
 
 
-type ObjType = 'Rock' | 'Shooter' | 'Ammo';
+type ObjType = 'Rock' | 'Shooter';

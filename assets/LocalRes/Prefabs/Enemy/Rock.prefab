@@ -150,7 +150,7 @@
     },
     "tag": 0,
     "_group": 256,
-    "_density": 1,
+    "_density": 10,
     "_sensor": false,
     "_friction": 0.2,
     "_restitution": 0,

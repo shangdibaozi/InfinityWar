@@ -31,10 +31,10 @@ export class Boost extends Component {
         // 每次更新物理系统处理位置的迭代次数，默认为 10
         phSystem.positionIterations = 10;
 
-        PhysicsSystem2D.instance.debugDrawFlags = 
+        // PhysicsSystem2D.instance.debugDrawFlags = 
                                     // EPhysics2DDrawFlags.Aabb | 
                                     // EPhysics2DDrawFlags.CenterOfMass | 
-                                    EPhysics2DDrawFlags.Shape;
+                                    // EPhysics2DDrawFlags.Shape;
 
         window['ecs'] = ecs;
 

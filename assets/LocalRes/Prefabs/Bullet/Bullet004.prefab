@@ -236,7 +236,7 @@
       "__id__": 6
     },
     "acceleration": 500,
-    "_maxSpeed": 1000,
+    "_maxSpeed": 1500,
     "heading": {
       "__type__": "cc.Vec3",
       "x": 0,

@@ -3,6 +3,7 @@ import { _decorator, Component, Node, Collider2D, RigidBody2D } from 'cc';
 import { ObjPool } from '../../Common/ObjPool';
 import { PhysicsGroup } from '../../Constants';
 import { ecs } from '../../Libs/ECS';
+import { Util } from '../../Util';
 import { CCComp } from '../ECS/Components/CCComp';
 import { ECSTag } from '../ECS/Components/ECSTag';
 import { HealthComp } from '../ECS/Components/HealthComp';
@@ -27,7 +28,11 @@ export class Rock extends CCComp {
     }
 
     onEnable() {
-        this.movement.rb2d.wakeUp();
+        let rb2d = this.movement.rb2d;
+        rb2d.fixedRotation = false;
+        rb2d.wakeUp();
+        let impluse = Util.randomRange(-1, 1);
+        rb2d.applyAngularImpulse(impluse, true);
         this.health.init(100);
         this.ent.add(ECSTag.CanMove);
     }

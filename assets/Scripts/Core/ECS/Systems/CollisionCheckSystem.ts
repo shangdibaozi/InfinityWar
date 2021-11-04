@@ -1,5 +1,6 @@
 
 import { _decorator, Component, Node, PhysicsSystem2D, Contact2DType, Collider2D, IPhysics2DContact, RigidBody2D, assert, v2, view, v3 } from 'cc';
+import { ObjPool } from '../../../Common/ObjPool';
 import { PhysicsGroup } from '../../../Constants';
 import { Global } from '../../../Global';
 import { ecs } from '../../../Libs/ECS';
@@ -9,12 +10,15 @@ import { Enemy } from '../../CCComponent/Enemy';
 import { Player } from '../../CCComponent/Player';
 import { Rock } from '../../CCComponent/Rock';
 import { CollisionInfoComp } from '../Components/CollisionInfoComp';
+import { LifeTimerComponent } from '../Components/LifeTimerComponent';
 import { CCNodeComponent } from '../Components/Movement';
 const { ccclass, property } = _decorator;
 
 let Bullet_Contact_Wall = PhysicsGroup.Bullet | PhysicsGroup.Wall;
+let Bullet_Contact_Enemy_Bullet = PhysicsGroup.Bullet | PhysicsGroup.Bullet_Enemy;
+
 let Player_Contact_Wall = PhysicsGroup.Player | PhysicsGroup.Wall;
-let Player_Contact_Collectable = PhysicsGroup.Player_Collectable | PhysicsGroup.Collectable;
+let Player_Contact_Collectable = PhysicsGroup.Player | PhysicsGroup.Collectable;
 
 let Player_Contact_Enemy = PhysicsGroup.Player | PhysicsGroup.Enemy;
 let Bullet_Contact_Enemy = PhysicsGroup.Bullet | PhysicsGroup.Enemy;
@@ -38,6 +42,7 @@ let blPos = v3();
 export class CollisionCheckSystem extends ecs.ComblockSystem {
 
     bullet: Bullet;
+    bulletEnemy: Bullet;
     enemy: Enemy;
     ammo: Ammo;
     rock: Rock;
@@ -63,9 +68,20 @@ export class CollisionCheckSystem extends ecs.ComblockSystem {
             this.refreshNode(info.groupA, info.nodeA);
             this.refreshNode(info.groupB, info.nodeB);
             switch(mask) {
-                case Bullet_Enemy_Contact_Wall:
+                case Bullet_Enemy_Contact_Wall: {
+                    this.bulletEnemy.onCollision();
+                    this.bulletEnemy.createEffect(blPos);
+                    break;
+                }
                 case Bullet_Contact_Wall: {
-                    this.bullet.getComponent(Bullet).onCollision(blPos);
+                    this.bullet.onCollision();
+                    this.bullet.createEffect(blPos);
+                    break;
+                }
+                case Bullet_Contact_Enemy_Bullet: {
+                    this.bullet.onCollision();
+                    this.bullet.createEffect(blPos);
+                    this.bulletEnemy.onCollision();
                     break;
                 }
                 case Player_Contact_Wall: {
@@ -84,7 +100,8 @@ export class CollisionCheckSystem extends ecs.ComblockSystem {
                 }
                 case Bullet_Contact_Enemy: {
                     this.enemy.onHit(this.bullet.damage);
-                    this.bullet.onCollision(blPos);
+                    this.bullet.onCollision();
+                    this.bullet.createEffect(blPos);
                     break;
                 }
                 case Player_Contact_Rock: {
@@ -94,12 +111,14 @@ export class CollisionCheckSystem extends ecs.ComblockSystem {
                 }
                 case Bullet_Contact_Rock: {
                     this.rock.onHit(10);
-                    this.bullet.onCollision(blPos);
+                    this.bullet.onCollision();
+                    this.bullet.createEffect(blPos);
                     break;
                 }
                 case Bullet_Enemy_Contact_Player: {
                     ecs.getSingleton(Player).onHit(5);
-                    this.bullet.onCollision(blPos);
+                    this.bulletEnemy.onCollision();
+                    this.bulletEnemy.createEffect(blPos);
                     break;
                 }
             }
@@ -127,7 +146,7 @@ export class CollisionCheckSystem extends ecs.ComblockSystem {
                 break;
             }
             case PhysicsGroup.Bullet_Enemy: {
-                this.bullet = node.getComponent(Bullet);
+                this.bulletEnemy = node.getComponent(Bullet);
                 break;
             }
             case PhysicsGroup.Rock: {

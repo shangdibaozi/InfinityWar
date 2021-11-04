@@ -56,7 +56,7 @@ export class Bullet extends CCComp {
         this.movement.rb2d.wakeUp();
     }
 
-    onCollision(bpos: Vec3) {
+    onCollision() {
         if(!this.ent.has(ECSTag.CanMove)) {
             return;
         }
@@ -64,7 +64,9 @@ export class Bullet extends CCComp {
         console.log('<------------', this.node.uuid);
         ObjPool.putNode(this.node);
         this.ent.remove(ECSTag.CanMove);
+    }
 
+    createEffect(bpos: Vec3) {
         let effect = ObjPool.getNode(this.collisionEffect.data.name, this.collisionEffect);
         effect.parent = Global.bulletLayer;
         effect.setPosition(bpos);

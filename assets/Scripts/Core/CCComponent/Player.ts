@@ -59,7 +59,7 @@ export class Player extends CCComp {
         let ent = this.ent;
 
         ent.add(ECSTag.TypePlayer);
-        // ent.add(this.shootDetail);
+        ent.add(this.shootDetail);
         ent.add(this.movement);
         ent.add(this.boost);
         ent.add(CCNodeComponent).val = this.node;

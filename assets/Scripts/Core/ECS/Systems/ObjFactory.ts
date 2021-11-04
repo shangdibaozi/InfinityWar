@@ -49,18 +49,16 @@ export class ObjFactory extends ecs.ComblockSystem {
     difficulty2Points: Record<number, number> = {};
     enemy2Points: Record<ObjType, number> = {
         'Rock': 2,
-        'Shooter': 4,
-        'Ammo': 3
+        'Shooter': 4
     };
     enemySpawnChances: Record<number, ChanceList> = {
-        1: new ChanceList([['Rock', 2], ['Ammo', 3]]),
-        2: new ChanceList([['Rock', 8], ['Shooter', 4], ['Ammo', 3]]),
-        3: new ChanceList([['Rock', 8], ['Shooter', 8], ['Ammo', 3]]),
-        4: new ChanceList([['Rock', 4], ['Shooter', 8], ['Ammo', 3]]),
+        1: new ChanceList([['Rock', 2]]),
+        2: new ChanceList([['Rock', 8], ['Shooter', 4]]),
+        3: new ChanceList([['Rock', 8], ['Shooter', 8]]),
+        4: new ChanceList([['Rock', 4], ['Shooter', 8]]),
     };
 
     generateFunc: Record<ObjType, Function> = {
-        'Ammo': this.generateAmmo.bind(this),
         'Rock': this.generateRock.bind(this),
         'Shooter': this.generateShooter.bind(this)
     }
@@ -79,8 +77,7 @@ export class ObjFactory extends ecs.ComblockSystem {
         for(let i = 5; i <= 1024; i++) {
             this.enemySpawnChances[i] = new ChanceList([
                 ['Rock', Util.randomRangeInt(2, 12)], 
-                ['Shooter', Util.randomRangeInt(2, 12)],
-                ['Ammo', Util.randomRangeInt(2, 12)]
+                ['Shooter', Util.randomRangeInt(2, 12)]
             ]);
         }
 
