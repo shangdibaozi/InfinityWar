@@ -1,4 +1,4 @@
-import { _decorator, toDegree, v3, Node, Vec3 } from "cc";
+import { _decorator, toDegree, v3, Node, Vec3, RigidBody2D, Vec2, v2 } from "cc";
 import { ecs } from "../../../Libs/ECS";
 const { ccclass, property } = _decorator;
 
@@ -12,20 +12,19 @@ export class CCNodeComponent extends ecs.Comp {
     }
 }
 
-let outV3 = v3();
+
 
 @ccclass('MovementComponent')
 @ecs.register('Movement')
 export class MovementComponent extends ecs.Comp {
-    pos: Vec3 = v3();
-
     angle: number = 0;
 
-    angleSpeed: number = 0;
-
-    isSelfRotate: boolean = false;
-
     speed: number = 0;
+
+    @property({
+        type: RigidBody2D
+    })
+    rb2d: RigidBody2D;
 
     @property
     acceleration: number = 0;
@@ -46,32 +45,10 @@ export class MovementComponent extends ecs.Comp {
     @property
     targetHeading: Vec3 = v3();
 
+    velocity: Vec2 = v2();
+
     reset() {
 
-    }
-
-    update(dt: number) {
-        this.updateHeading();
-        
-        this.speed = Math.min(this.speed + this.acceleration * dt, this._maxSpeed);
-
-        this.pos.add3f(this.heading.x * this.speed * dt, this.heading.y * this.speed * dt, 0);
-
-        if(this.isSelfRotate) {
-            this.angle += this.angleSpeed * dt;
-        }
-    }
-
-    updateHeading() {
-        if(!Vec3.equals(this.heading, this.targetHeading, 0.01)) {
-            Vec3.subtract(outV3, this.targetHeading, this.heading);
-            outV3.multiplyScalar(0.025);
-            this.heading.add(outV3);
-            this.heading.normalize();
-            if(!this.isSelfRotate) {
-                this.angle = toDegree(Math.atan2(this.heading.y, this.heading.x)) - 90;
-            }
-        }
     }
 
     calcAngle() {

@@ -13,14 +13,9 @@ const { ccclass, property } = _decorator;
 @ecs.register('Ammo', false)
 export class Ammo extends CCComp {
     @property({
-        type: RigidBody2D
+        type: MovementComponent
     })
-    rb2d: RigidBody2D;
-
-    angle: number = 0;
-    angleSpeed: number = 0;
-
-    movement: MovementComponent = new MovementComponent();
+    movement: MovementComponent;
 
     onLoad() {
         super.onLoad();
@@ -37,20 +32,18 @@ export class Ammo extends CCComp {
     
     reset() {
         let movement = this.movement;
-        movement.speed = Util.randomRange(20, 50);
-        movement.angleSpeed = Util.randomRange(200, 400);
-        if(Math.random() > 0.5) {
-            movement.angleSpeed *= -1;
-        }
+        movement.speed = Util.randomRange(50, 100);
         movement.maxSpeed = movement.speed;
-        movement.isSelfRotate = true;
-
-        this.angleSpeed = Util.randomRange(40, 100);
-        this.rb2d.wakeUp();
+        movement.rb2d.fixedRotation = false;
+        movement.rb2d.angularVelocity = Math.random() > 0.5 ? 4 : -4;
+        this.movement.rb2d.wakeUp();
     }
 
     onCollision() {
-        this.rb2d.sleep();
+        if(!this.ent.has(ECSTag.CanMove)) {
+            return;
+        }
+        this.movement.rb2d.sleep();
         ObjPool.putNode(this.node);
         this.ent.remove(ECSTag.CanMove);
     }

@@ -17,12 +17,6 @@ const { ccclass, property } = _decorator;
 @ecs.register('Player', false)
 export class Player extends CCComp {
 
-    
-    @property({
-        type: RigidBody2D
-    })
-    rb2d: RigidBody2D;
-
     @property({
         type: Node
     })
@@ -65,7 +59,7 @@ export class Player extends CCComp {
         let ent = this.ent;
 
         ent.add(ECSTag.TypePlayer);
-        ent.add(this.shootDetail);
+        // ent.add(this.shootDetail);
         ent.add(this.movement);
         ent.add(this.boost);
         ent.add(CCNodeComponent).val = this.node;
@@ -109,9 +103,12 @@ export class Player extends CCComp {
     }
 
     die() {
+        if(!this.ent.has(ECSTag.CanMove)) {
+            return;
+        }
         this.trail.active = false;
         this.shootDetail.hideFlash();
-        this.rb2d.sleep(); // 取消碰撞检测
+        this.movement.rb2d.sleep(); // 取消碰撞检测
         
         let ent = this.ent;
         ent.remove(ECSTag.CanMove);
@@ -133,12 +130,12 @@ export class Player extends CCComp {
         this.trail.active = true;
         this.node.setPosition(this.originalPos);
         this.node.angle = 0;
-        this.rb2d.wakeUp();
+        this.movement.rb2d.wakeUp();
 
         let ent = this.ent;
         
         this.movement.angle = 0;
-        this.movement.pos.set(this.originalPos);
+        // this.movement.pos.set(this.originalPos);
         this.movement.heading.set(this.defaultHeading);
         this.movement.targetHeading.set(this.defaltTargetHeading);
         ent.add(ECSTag.CanMove);

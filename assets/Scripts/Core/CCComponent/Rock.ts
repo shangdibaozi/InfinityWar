@@ -12,13 +12,11 @@ const { ccclass, property } = _decorator;
 @ecs.register('Rock')
 @ccclass('Rock')
 export class Rock extends CCComp {
-    @property({
-        type: RigidBody2D
-    })
-    rb2d: RigidBody2D;
-
     health: HealthComp = new HealthComp();
-    movement: MovementComponent = new MovementComponent();
+    @property({
+        type: MovementComponent
+    })
+    movement: MovementComponent;
 
     onLoad() {
         super.onLoad();
@@ -29,7 +27,7 @@ export class Rock extends CCComp {
     }
 
     onEnable() {
-        this.rb2d.wakeUp();
+        this.movement.rb2d.wakeUp();
         this.health.init(100);
         this.ent.add(ECSTag.CanMove);
     }
@@ -43,7 +41,10 @@ export class Rock extends CCComp {
     }
 
     die() {
-        this.rb2d.sleep();
+        if(!this.ent.has(ECSTag.CanMove)) {
+            return;
+        }
+        this.movement.rb2d.sleep();
         this.ent.remove(ECSTag.CanMove);
         ObjPool.putNode(this.node);
     }

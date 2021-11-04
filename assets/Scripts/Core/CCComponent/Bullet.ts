@@ -19,11 +19,6 @@ export class Bullet extends CCComp {
     collisionEffect: Prefab;
 
     @property({
-        type: RigidBody2D
-    })
-    rb2d: RigidBody2D;
-
-    @property({
         type: MovementComponent
     })
     movement: MovementComponent;
@@ -53,17 +48,20 @@ export class Bullet extends CCComp {
         move.heading.set(heading);
         move.targetHeading.set(targetHeading);
         move.speed = move.maxSpeed;
-        move.pos.set(pos);
+        // move.pos.set(pos);
         this.node.angle = move.calcAngle();
 
         // ent.add(LifeTimerComponent).init(3);
         
-        this.rb2d.wakeUp();
+        this.movement.rb2d.wakeUp();
     }
 
     onCollision(bpos: Vec3) {
-        this.rb2d.sleep();
-        // console.log('<------------', this.node.uuid);
+        if(!this.ent.has(ECSTag.CanMove)) {
+            return;
+        }
+        this.movement.rb2d.sleep();
+        console.log('<------------', this.node.uuid);
         ObjPool.putNode(this.node);
         this.ent.remove(ECSTag.CanMove);
 

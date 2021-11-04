@@ -15,11 +15,6 @@ const { ccclass, property } = _decorator;
 export class Enemy extends CCComp {
 
     @property({
-        type: RigidBody2D
-    })
-    rb2d: RigidBody2D;
-
-    @property({
         type: MovementComponent
     })
     movement: MovementComponent = null;
@@ -48,10 +43,13 @@ export class Enemy extends CCComp {
     onEnable() {
         this.health.init(100);
         this.ent.add(ECSTag.CanMove);
-        this.rb2d.wakeUp();
+        this.movement.rb2d.wakeUp();
     }
 
     onHit(damage: number) {
+        if(!this.ent.has(ECSTag.CanMove)) {
+            return;
+        }
         this.health.hp = Math.max(this.health.hp - damage, 0);
         if(this.health.hp <= 0) {
             this.die();
@@ -62,7 +60,7 @@ export class Enemy extends CCComp {
     }
 
     die() {
-        this.rb2d.sleep();
+        this.movement.rb2d.sleep();
         this.shootDetail.hideFlash();
         this.ent.remove(ECSTag.CanMove);
         ObjPool.putNode(this.node);

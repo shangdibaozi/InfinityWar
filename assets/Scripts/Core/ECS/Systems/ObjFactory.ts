@@ -1,4 +1,4 @@
-import { js, Pool, sp, view } from "cc";
+import { js, Pool, sp, v3, view } from "cc";
 import { ObjPool } from "../../../Common/ObjPool";
 import { Global } from "../../../Global";
 import { ecs } from "../../../Libs/ECS";
@@ -35,6 +35,8 @@ class ChanceList {
         return elem;
     }
 }
+
+let pos3 = v3();
 
 export class ObjFactory extends ecs.ComblockSystem {
 
@@ -146,16 +148,14 @@ export class ObjFactory extends ecs.ComblockSystem {
         let y = Util.randomRange(-winSize.height / 2, winSize.height / 2);
         if(Math.random() < 0.5) {
             movement.targetHeading.set(1, 0, 0);
-            movement.pos.set(-winSize.width / 2 - 90, y);
+            pos3.set(-winSize.width / 2 - 90, y);
         }
         else {
             movement.targetHeading.set(-1, 0, 0);
-            movement.pos.set(winSize.width / 2 + 90, y);
+            pos3.set(winSize.width / 2 + 90, y);
         }
         
-        node.setPosition(movement.pos);
-
-        movement.isSelfRotate = false;
+        node.setPosition(pos3);
     }
 
 
@@ -164,27 +164,20 @@ export class ObjFactory extends ecs.ComblockSystem {
         node.parent = Global.bulletLayer;
         node.active = true;
         let movement = node.getComponent(Rock).movement;
-        movement.speed = Util.randomRange(40, 70);
+        movement.speed = Util.randomRange(300, 500);
         movement.maxSpeed = movement.speed;
-
-        movement.angleSpeed = Util.randomRange(50, 100);
-        if(Math.random() > 0.5) {
-            movement.angleSpeed *= -1;
-        }
 
         let winSize = view.getVisibleSize();
         let y = Util.randomRange(-winSize.height / 2, winSize.height / 2);
         if(Math.random() < 0.5) {
             movement.heading.set(1, 0, 0);
-            movement.pos.set(-winSize.width / 2 - 20, y);
+            pos3.set(-winSize.width / 2 - 20, y);
         }
         else {
             movement.heading.set(-1, 0, 0);
-            movement.pos.set(winSize.width / 2 + 20, y);
+            pos3.set(winSize.width / 2 + 20, y);
         }
-        node.setPosition(movement.pos);
-
-        movement.isSelfRotate = true;
+        node.setPosition(pos3);
     }
 
     generateAmmo() {
@@ -198,12 +191,12 @@ export class ObjFactory extends ecs.ComblockSystem {
         let y = Util.randomRange(-winSize.height / 2, winSize.height / 2);
         if(Math.random() < 0.5) {
             ammo.movement.heading.set(1, 0, 0);
-            ammo.movement.pos.set(-winSize.width / 2 - 20, y);
+            pos3.set(-winSize.width / 2 - 20, y);
         }
         else {
             ammo.movement.heading.set(-1, 0, 0);
-            ammo.movement.pos.set(winSize.width / 2 + 20, y);
+            pos3.set(winSize.width / 2 + 20, y);
         }
-        node.setPosition(ammo.movement.pos);
+        node.setPosition(pos3);
     }
 }

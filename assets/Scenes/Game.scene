@@ -275,7 +275,7 @@
     "_priority": 1073741824,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 426.4324917672887,
+    "_orthoHeight": 696.2007168458782,
     "_near": 1,
     "_far": 2000,
     "_color": {
@@ -2305,7 +2305,7 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "enabledContactListener": false,
+    "enabledContactListener": true,
     "bullet": false,
     "awakeOnLoad": true,
     "_group": 2,

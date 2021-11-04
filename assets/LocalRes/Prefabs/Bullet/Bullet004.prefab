@@ -221,9 +221,6 @@
       "__uuid__": "909c11e7-30ef-46e9-9e6e-f065e6603d63",
       "__expectedType__": "cc.Prefab"
     },
-    "rb2d": {
-      "__id__": 6
-    },
     "movement": {
       "__id__": 12
     },
@@ -235,8 +232,11 @@
   },
   {
     "__type__": "MovementComponent",
+    "rb2d": {
+      "__id__": 6
+    },
     "acceleration": 500,
-    "_maxSpeed": 600,
+    "_maxSpeed": 1000,
     "heading": {
       "__type__": "cc.Vec3",
       "x": 0,

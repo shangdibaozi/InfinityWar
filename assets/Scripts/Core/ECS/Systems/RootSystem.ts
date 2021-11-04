@@ -12,7 +12,7 @@ export class RootSystem extends ecs.RootSystem {
     constructor() {
         super();
 
-        // this.add(new ObjFactory());
+        this.add(new ObjFactory());
 
         this.add(new BoostSystem());
         this.add(new MoveSystem());

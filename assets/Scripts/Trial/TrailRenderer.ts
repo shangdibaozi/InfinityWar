@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node, MotionStreak, Color, IAssembler, Vec2, UI, Enum, Pool, __private } from 'cc';
+import { _decorator, Component, Node, MotionStreak, Color, IAssembler, Vec2, UI, Enum, Pool, __private, macro } from 'cc';
 const { ccclass, property } = _decorator;
 
 
@@ -18,6 +18,7 @@ const _pointPool = new Pool(() => {
     return new MotionStreak.Point();
 }, 16);
 
+let flag = true;
 export const MotionStreakAssembler: IAssembler = {
 
     createData (comp: MotionStreak) {
@@ -29,6 +30,10 @@ export const MotionStreakAssembler: IAssembler = {
     },
 
     update (comp: TrailRenderer, dt: number) {
+        flag = !flag;
+        if(flag) {
+            // return;
+        }
         // const stroke = comp.stroke / 2;
         const node = comp.node;
         const matrix = node.worldMatrix;
@@ -240,6 +245,7 @@ export class TrailRenderer extends MotionStreak {
     onEnable() {
         super.onEnable();
         this.halfStroke = this.stroke / 2;
+
     }
 
     protected _flushAssembler () {

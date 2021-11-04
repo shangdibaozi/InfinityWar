@@ -1,4 +1,4 @@
-import { Node, UITransform, Vec3 } from "cc";
+import { Node, toDegree, UITransform, v2, v3, Vec2, Vec3 } from "cc";
 import { ObjPool } from "../../../Common/ObjPool";
 import { Global } from "../../../Global";
 import { ecs } from "../../../Libs/ECS";
@@ -12,9 +12,14 @@ import { CCNodeComponent, MovementComponent } from "../Components/Movement";
  * 通过看引擎源码发现，其实通过非物理方式控制刚体运动，引擎也会把物体的坐标点同步到
  * 物理系统上。详见rigid-body.ts中的_onNodeTransformChanged方法。
  * 
+ * 用渲染坐标去移动刚体存在一个严重的问题是物理推挤时会抖动，并穿过其他刚体。
+ * 
  * 钢铁运动结点同步到渲染层的调用流程是
  * director的tick方法->physics-system的postUpdate方法->physics-world的syncPhysicsToScene方法
  */
+
+ let outV3 = v3();
+ let playerPos = v3();
 export class MoveSystem extends ecs.ComblockSystem {
 
     minX: number = 0;
@@ -36,25 +41,41 @@ export class MoveSystem extends ecs.ComblockSystem {
 
     update(entities: ecs.Entity[]): void {
         let playerComp = ecs.getSingleton(Player);
-        let playerPos: Vec3 = null;
         if(playerComp && playerComp.ent.has(ECSTag.CanMove)) {
-            playerPos = playerComp.movement.pos;
+            playerComp.node.getPosition(playerPos);
         }
 
         let dt = this.dt;
         for(let ent of entities) {
             let move = ent.get(MovementComponent);
             let ccnode = ent.get(CCNodeComponent);
+            ccnode.val.getPosition(outV3);
 
             if(ent.has(ECSTag.TypeAmmo) && playerPos) {
-                Vec3.subtract(move.targetHeading, playerPos, move.pos);
+                Vec3.subtract(move.targetHeading, playerPos, outV3);
             }
-            move.update(dt);
-            ccnode.val.setPosition(move.pos);
-            ccnode.val.angle = move.angle;
+            if(!Vec3.equals(move.heading, move.targetHeading, 0.01)) {
+                Vec3.subtract(outV3, move.targetHeading, move.heading);
+                outV3.multiplyScalar(0.025);
+                move.heading.add(outV3);
+                move.heading.normalize();
+                if(!move.rb2d.fixedRotation) {
+                    move.angle = toDegree(Math.atan2(move.heading.y, move.heading.x)) - 90;
+                }
+            }
+            
+            move.speed = Math.min(move.speed + move.acceleration * dt, move.maxSpeed);
+            
+            move.velocity.x = move.heading.x * move.speed * dt;
+            move.velocity.y = move.heading.y * move.speed * dt;
+            move.rb2d.linearVelocity = move.velocity;
+
+            if(!ent.has(ECSTag.TypeBullet) && !ent.has(ECSTag.TypeAmmo)) {
+                ccnode.val.angle = move.angle;
+            }
 
             if(!ent.has(ECSTag.TypePlayer)) {
-                this.outofRangeCheck(move.pos, ent);
+                this.outofRangeCheck(outV3, ent);
             }
         }
     }
