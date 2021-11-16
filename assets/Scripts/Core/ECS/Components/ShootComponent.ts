@@ -1,11 +1,10 @@
-import { Canvas, director, instantiate, Node, Prefab, Sprite, tween, UIComponent, UITransform, v3, Vec3, _decorator } from 'cc';
+import { Node, Prefab, UITransform, v3, Vec3, _decorator } from 'cc';
 import { ObjPool } from '../../../Common/ObjPool';
 import { PhysicsGroup } from '../../../Constants';
 import { Global } from '../../../Global';
 import { ecs } from "../../../Libs/ECS";
 import { Bullet } from '../../CCComponent/Bullet';
 import { ECSTag } from './ECSTag';
-import { MovementComponent } from './Movement';
 const { ccclass, property } = _decorator;
 
 
@@ -91,6 +90,9 @@ export class ShootComopnent extends ecs.Comp {
             debugger;
         }
 
-        node.getComponent(Bullet).init(outv3, this.heading, this.heading, gruop);
+        let bullet = node.getComponent(Bullet);
+        bullet.init(outv3, this.heading, this.heading, gruop);
+
+        return bullet.ent;
     }
 }

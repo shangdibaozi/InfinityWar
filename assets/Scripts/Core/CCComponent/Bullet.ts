@@ -4,6 +4,7 @@ import { ObjPool } from '../../Common/ObjPool';
 import { PhysicsGroup } from '../../Constants';
 import { Global } from '../../Global';
 import { ecs } from '../../Libs/ECS';
+import { HomingProjectileComp } from '../ECS/Components/BulletCpmps';
 import { CCComp } from '../ECS/Components/CCComp';
 import { ECSTag } from '../ECS/Components/ECSTag';
 import { LifeTimerComponent } from '../ECS/Components/LifeTimerComponent';
@@ -64,6 +65,7 @@ export class Bullet extends CCComp {
         console.log('<------------', this.node.uuid);
         ObjPool.putNode(this.node);
         this.ent.remove(ECSTag.CanMove);
+        this.ent.remove(HomingProjectileComp);
     }
 
     createEffect(bpos: Vec3) {

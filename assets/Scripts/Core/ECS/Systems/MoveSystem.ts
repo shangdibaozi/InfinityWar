@@ -54,9 +54,10 @@ export class MoveSystem extends ecs.ComblockSystem {
             if(ent.has(ECSTag.TypeAmmo) && playerPos) {
                 Vec3.subtract(move.targetHeading, playerPos, outV3);
             }
+
             if(!Vec3.equals(move.heading, move.targetHeading, 0.01)) {
                 Vec3.subtract(outV3, move.targetHeading, move.heading);
-                outV3.multiplyScalar(0.025);
+                outV3.multiplyScalar(dt * 4 / outV3.length()); // 防止1帧就转向到了目标方向
                 move.heading.add(outV3);
                 move.heading.normalize();
                 move.angle = toDegree(Math.atan2(move.heading.y, move.heading.x)) - 90;
@@ -67,9 +68,9 @@ export class MoveSystem extends ecs.ComblockSystem {
             move.velocity.x = move.heading.x * move.speed * dt;
             move.velocity.y = move.heading.y * move.speed * dt;
             move.rb2d.linearVelocity = move.velocity;
+            ccnode.val.angle = move.angle;
 
             if(ent.has(ECSTag.TypePlayer) || ent.has(ECSTag.TypeEnemy)) {
-                ccnode.val.angle = move.angle;
             } 
             else {
                 this.outofRangeCheck(outV3, ent);

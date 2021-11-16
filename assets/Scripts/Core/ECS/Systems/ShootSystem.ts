@@ -2,6 +2,7 @@ import { UITransform, v3, Vec3 } from "cc";
 import { Global } from "../../../Global";
 import { ecs } from "../../../Libs/ECS";
 import { Player } from "../../CCComponent/Player";
+import { HomingProjectileComp } from "../Components/BulletCpmps";
 import { ECSTag } from "../Components/ECSTag";
 import { MovementComponent } from "../Components/Movement";
 import { ShootComopnent } from "../Components/ShootComponent";
@@ -34,12 +35,14 @@ export class ShootSystem extends ecs.ComblockSystem {
         if(shootComp.timer >= shootComp.interval) {
             shootComp.timer -= shootComp.interval;
             if(shootComp.shootPoint1) {
-                shootComp.createBullet(shootComp.shootPoint1);
+                let bullet = shootComp.createBullet(shootComp.shootPoint1);
+                bullet.add(HomingProjectileComp);
                 shootComp.flash1Time = FlashTime;
                 shootComp.flash1.active = true;
             }
             if (shootComp.shootPoint2) {
-                shootComp.createBullet(shootComp.shootPoint2);
+                let bullet = shootComp.createBullet(shootComp.shootPoint2);
+                bullet.add(HomingProjectileComp);
                 shootComp.flash2Time = FlashTime;
                 shootComp.flash2.active = true;
             }
@@ -108,7 +111,7 @@ export class ShootSystem extends ecs.ComblockSystem {
         if(this.playerPos == null) {
             let playerComp = ecs.getSingleton(Player);
             if(playerComp && playerComp.ent.has(ECSTag.CanMove)) {
-                this.playerPos = playerComp.movement.pos;
+                this.playerPos = playerComp.node.position;
             }
         }
         return this.playerPos;

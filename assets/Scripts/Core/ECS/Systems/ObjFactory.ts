@@ -174,6 +174,7 @@ export class ObjFactory extends ecs.ComblockSystem {
             movement.heading.set(-1, 0, 0);
             pos3.set(winSize.width / 2 + 20, y);
         }
+        movement.targetHeading.set(movement.heading);
         node.setPosition(pos3);
     }
 
