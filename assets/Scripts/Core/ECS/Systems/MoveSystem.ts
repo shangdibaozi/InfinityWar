@@ -3,6 +3,7 @@ import { ObjPool } from "../../../Common/ObjPool";
 import { Global } from "../../../Global";
 import { ecs } from "../../../Libs/ECS";
 import { Player } from "../../CCComponent/Player";
+import { Rock } from "../../CCComponent/Rock";
 import { ECSTag } from "../Components/ECSTag";
 import { CCNodeComponent, MovementComponent } from "../Components/Movement";
 
@@ -68,7 +69,10 @@ export class MoveSystem extends ecs.ComblockSystem {
             move.velocity.x = move.heading.x * move.speed * dt;
             move.velocity.y = move.heading.y * move.speed * dt;
             move.rb2d.linearVelocity = move.velocity;
-            ccnode.val.angle = move.angle;
+
+            if(!ent.has(Rock)) {
+                ccnode.val.angle = move.angle;
+            }
 
             if(ent.has(ECSTag.TypePlayer) || ent.has(ECSTag.TypeEnemy)) {
             } 

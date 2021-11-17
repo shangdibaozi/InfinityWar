@@ -2,7 +2,7 @@ import { UITransform, v3, Vec3 } from "cc";
 import { Global } from "../../../Global";
 import { ecs } from "../../../Libs/ECS";
 import { Player } from "../../CCComponent/Player";
-import { HomingProjectileComp } from "../Components/BulletCpmps";
+import { HomingProjectileComp, NinetyDegreeChangeProjectileComp } from "../Components/BulletCpmps";
 import { ECSTag } from "../Components/ECSTag";
 import { MovementComponent } from "../Components/Movement";
 import { ShootComopnent } from "../Components/ShootComponent";
@@ -36,13 +36,15 @@ export class ShootSystem extends ecs.ComblockSystem {
             shootComp.timer -= shootComp.interval;
             if(shootComp.shootPoint1) {
                 let bullet = shootComp.createBullet(shootComp.shootPoint1);
-                bullet.add(HomingProjectileComp);
+                // bullet.add(HomingProjectileComp);
+                bullet.add(NinetyDegreeChangeProjectileComp);
                 shootComp.flash1Time = FlashTime;
                 shootComp.flash1.active = true;
             }
             if (shootComp.shootPoint2) {
                 let bullet = shootComp.createBullet(shootComp.shootPoint2);
-                bullet.add(HomingProjectileComp);
+                // bullet.add(HomingProjectileComp);
+                bullet.add(NinetyDegreeChangeProjectileComp);
                 shootComp.flash2Time = FlashTime;
                 shootComp.flash2.active = true;
             }

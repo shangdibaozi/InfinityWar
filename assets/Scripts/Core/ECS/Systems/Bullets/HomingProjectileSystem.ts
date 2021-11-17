@@ -32,7 +32,7 @@ export class HomingProjectileSystem extends ecs.ComblockSystem implements ecs.IE
         }
     }
 
-    findNearbyEnemy(bulletPos: Vec3, distance: number = 400) {
+    findNearbyEnemy(bulletPos: Vec3, distance: number = 800) {
         let enemies: ecs.Entity[] = [];
         for(let e of this.enemyGroup.matchEntities) {
             if(Vec3.distance(bulletPos, e.get(CCNodeComponent).val.position) <= distance) {

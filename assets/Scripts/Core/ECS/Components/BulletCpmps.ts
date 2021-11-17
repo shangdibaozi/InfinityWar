@@ -9,3 +9,19 @@ export class HomingProjectileComp extends ecs.Comp {
         this.target = null;
     }
 }
+
+@ecs.register('NinetyDegreeChangeProjectile')
+export class NinetyDegreeChangeProjectileComp extends ecs.Comp {
+
+    ninetyDegreeDirection: number = 0;
+
+    state: number = 0;
+
+    timer0: number = 0.2;
+    timer1: number = 0.25;
+    timer2: number = 0.1;
+
+    reset() {
+
+    }
+}
