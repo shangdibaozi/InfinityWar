@@ -6,9 +6,9 @@ import { ECSTag } from "../../Components/ECSTag";
 import { MovementComponent } from "../../Components/Movement";
 
 
-let TIMER_0 = 0.3;
-let TIMER_1 = 0.45;
-let TIMER_2 = 0.2;
+let TIMER_0 = 0.2;
+let TIMER_1 = 0.25;
+let TIMER_2 = 0.1;
 
 export class NinetyDegreeChangeProjectileSystem extends ecs.ComblockSystem implements ecs.IEntityEnterSystem {
     
@@ -50,13 +50,9 @@ export class NinetyDegreeChangeProjectileSystem extends ecs.ComblockSystem imple
             }
             else {
                 comp.timer1 -= dt;
-                if(comp.timer1 <= 0) {
-                    comp.timer1 = TIMER_1;
-                    this.changeAngle(e, -1 * comp.ninetyDegreeDirection);
-                }
-
                 comp.timer2 -= dt;
                 if(comp.timer2 <= 0) {
+                    comp.state = 1;
                     comp.timer2 = TIMER_2;
                     this.changeAngle(e, -1 * comp.ninetyDegreeDirection);
                     comp.ninetyDegreeDirection *= -1;
