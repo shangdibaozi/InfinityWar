@@ -1,3 +1,4 @@
+import { v3, Vec2, Vec3 } from "cc";
 import { ecs } from "../../../Libs/ECS";
 
 @ecs.register('HomingProjectile')
@@ -20,6 +21,22 @@ export class NinetyDegreeChangeProjectileComp extends ecs.Comp {
     timer0: number = 0.2;
     timer1: number = 0.25;
     timer2: number = 0.1;
+
+    reset() {
+
+    }
+}
+
+@ecs.register('WavyProjectile')
+export class WavyProjectileComp extends ecs.Comp {
+
+    direction: number = 0;
+
+    heading: Vec3 = v3();
+
+    state: number = 0;
+
+    timer: number = 0;
 
     reset() {
 
