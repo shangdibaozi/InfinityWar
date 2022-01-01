@@ -9,7 +9,8 @@ export enum UI_EVENT {
     SHOOT_CHANGE_TARGET,
     SHOOT_STOP,
     UPDATE_HP,
-    UPDATE_SCORE
+    UPDATE_SCORE,
+    SWITCH_BULLET
 }
 
 export enum AI_STATE {

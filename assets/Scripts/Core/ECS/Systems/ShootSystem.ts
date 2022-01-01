@@ -1,8 +1,9 @@
 import { UITransform, v3, Vec3 } from "cc";
+import { UI_EVENT } from "../../../Constants";
 import { Global } from "../../../Global";
 import { ecs } from "../../../Libs/ECS";
 import { Player } from "../../CCComponent/Player";
-import { HomingProjectileComp, NinetyDegreeChangeProjectileComp, WavyProjectileComp } from "../Components/BulletCpmps";
+import { HomingProjectileComp, NinetyDegreeChangeProjectileComp, NormalProjectileComp, WavyProjectileComp } from "../Components/BulletCpmps";
 import { ECSTag } from "../Components/ECSTag";
 import { MovementComponent } from "../Components/Movement";
 import { ShootComopnent } from "../Components/ShootComponent";
@@ -11,6 +12,10 @@ let FlashTime = 2 / 60;
 let outv3 = v3();
 export class ShootSystem extends ecs.ComblockSystem {
     playerPos: Vec3 = null;
+
+    init() {
+        Global.uiEvent.on(UI_EVENT.SWITCH_BULLET, this.onPlayerSwitchBullet, this);
+    }
 
     filter(): ecs.IMatcher {
         return ecs.allOf(ShootComopnent, MovementComponent, ECSTag.CanShoot);
@@ -38,7 +43,7 @@ export class ShootSystem extends ecs.ComblockSystem {
                 let bullet = shootComp.createBullet(shootComp.shootPoint1);
                 // bullet.add(HomingProjectileComp);
                 // bullet.add(NinetyDegreeChangeProjectileComp);
-                bullet.add(WavyProjectileComp);
+                // bullet.add(WavyProjectileComp);
                 shootComp.flash1Time = FlashTime;
                 shootComp.flash1.active = true;
             }
@@ -46,7 +51,7 @@ export class ShootSystem extends ecs.ComblockSystem {
                 let bullet = shootComp.createBullet(shootComp.shootPoint2);
                 // bullet.add(HomingProjectileComp);
                 // bullet.add(NinetyDegreeChangeProjectileComp);
-                bullet.add(WavyProjectileComp);
+                // bullet.add(WavyProjectileComp);
                 shootComp.flash2Time = FlashTime;
                 shootComp.flash2.active = true;
             }
@@ -119,5 +124,26 @@ export class ShootSystem extends ecs.ComblockSystem {
             }
         }
         return this.playerPos;
+    }
+
+    onPlayerSwitchBullet() {
+        let ent = ecs.getSingleton(Player).ent;
+        if(ent && ent.has(ECSTag.CanMove)) {
+            let comp = ent.get(ShootComopnent).projectileType;
+            // 测试用
+            if(comp == NormalProjectileComp) {
+                comp = HomingProjectileComp;
+            }
+            else if(comp == HomingProjectileComp) {
+                comp = NinetyDegreeChangeProjectileComp;
+            }
+            else if(comp == NinetyDegreeChangeProjectileComp) {
+                comp = WavyProjectileComp;
+            }
+            else {
+                comp = HomingProjectileComp;
+            }
+            ent.get(ShootComopnent).projectileType = comp;
+        }
     }
 }

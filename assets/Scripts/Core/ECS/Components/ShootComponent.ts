@@ -4,6 +4,7 @@ import { PhysicsGroup } from '../../../Constants';
 import { Global } from '../../../Global';
 import { ecs } from "../../../Libs/ECS";
 import { Bullet } from '../../CCComponent/Bullet';
+import { NormalProjectileComp } from './BulletCpmps';
 import { ECSTag } from './ECSTag';
 const { ccclass, property } = _decorator;
 
@@ -53,6 +54,8 @@ export class ShootComopnent extends ecs.Comp {
     })
     bulletPrefab: Prefab = null;
 
+    projectileType: ecs.CompType<ecs.Comp> = NormalProjectileComp;
+
     heading: Vec3 = v3(0, 1, 0);
 
     reset() {
@@ -92,7 +95,7 @@ export class ShootComopnent extends ecs.Comp {
 
         let bullet = node.getComponent(Bullet);
         bullet.init(outv3, this.heading, this.heading, gruop);
-
+        bullet.ent.add(this.projectileType);
         return bullet.ent;
     }
 }

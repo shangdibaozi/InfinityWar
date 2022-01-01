@@ -1,6 +1,13 @@
 import { v3, Vec2, Vec3 } from "cc";
 import { ecs } from "../../../Libs/ECS";
 
+@ecs.register('NormalProjectile')
+export class NormalProjectileComp extends ecs.Comp {
+    reset(): void {
+        
+    }
+}
+
 @ecs.register('HomingProjectile')
 export class HomingProjectileComp extends ecs.Comp {
 

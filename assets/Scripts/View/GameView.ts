@@ -36,4 +36,9 @@ export class GameView extends UIBase {
         let player = ecs.getSingleton(Player);
         player.relive();
     }
+
+
+    on_btnSwitchBullet() {
+        Global.uiEvent.emit(UI_EVENT.SWITCH_BULLET);
+    }
 }
